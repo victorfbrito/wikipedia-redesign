@@ -4,7 +4,7 @@
       id="image_block"
       :src="url_src"
       :alt="alt"
-      :style="{ width: width + 'px', height: height + 'px' }"
+      :style="{ width: width + 'rem', height: height + 'rem' }"
     />
     <p>{{ description }}</p>
   </div>

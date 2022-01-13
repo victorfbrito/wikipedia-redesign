@@ -1,10 +1,10 @@
 <template>
   <div id="main" v-if="content">
-    <h1>{{ content.title || "untitled" }}</h1>
-    <p>{{ content.intro }}</p>
+    <h1 class="title_xl primary">{{ content.title || "untitled" }}</h1>
+    <p class="text_m secondary">{{ content.intro }}</p>
     <div v-for="(content, index) in content.topics" :key="index">
-      <h2>{{ content.title || "untitled" }}</h2>
-      <p v-if="typeof content.content === 'string'">
+      <h2 class="title_l primary">{{ content.title || "untitled" }}</h2>
+      <p class="text_m secondary" v-if="typeof content.content === 'string'">
         {{ content.content !== "" ? content.content : "---" }}
       </p>
       <div
@@ -12,8 +12,8 @@
         v-for="(content, index) in content.content.topics"
         :key="index"
       >
-        <h3>{{ content.title || "untitled" }}</h3>
-        <p v-if="typeof content.content === 'string'">
+        <h3 class="title_m primary">{{ content.title || "untitled" }}</h3>
+        <p class="text_m secondary" v-if="typeof content.content === 'string'">
           {{ content.content !== "" ? content.content : "---" }}
         </p>
         <div
@@ -21,8 +21,11 @@
           v-for="(content, index) in content.content.topics"
           :key="index"
         >
-          <h4>{{ content.title || "untitled" }}</h4>
-          <p v-if="typeof content.content === 'string'">
+          <h4 class="subtitle primary">{{ content.title || "untitled" }}</h4>
+          <p
+            class="text_m secondary"
+            v-if="typeof content.content === 'string'"
+          >
             {{ content.content !== "" ? content.content : "---" }}
           </p>
           <div
@@ -30,8 +33,11 @@
             v-for="(content, index) in content.content.topics"
             :key="index"
           >
-            <h5>{{ content.title || "untitled" }}</h5>
-            <p v-if="typeof content.content === 'string'">
+            <h5 class="subtitle primary">{{ content.title || "untitled" }}</h5>
+            <p
+              class="text_m secondary"
+              v-if="typeof content.content === 'string'"
+            >
               {{ content.content !== "" ? content.content : "---" }}
             </p>
             <div
@@ -39,8 +45,13 @@
               v-for="(content, index) in content.content.topics"
               :key="index"
             >
-              <h6>{{ content.title || "untitled" }}</h6>
-              <p v-if="typeof content.content === 'string'">
+              <h6 class="subtitle primary">
+                {{ content.title || "untitled" }}
+              </h6>
+              <p
+                class="text_m secondary"
+                v-if="typeof content.content === 'string'"
+              >
                 {{ content.content !== "" ? content.content : "---" }}
               </p>
             </div>

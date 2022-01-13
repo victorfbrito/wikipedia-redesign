@@ -1,6 +1,17 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
+    <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
+    <Thumbnail
+      v-if="thumbnail"
+      :alt="thumbnail.alt"
+      :url_src="thumbnail.src"
+      :description="thumbnail.description"
+      :title="content.title"
+      :width="thumbnail.width"
+      :height="thumbnail.height"
+      :summary="content.intro"
+    />
+    <MainInfo :content="content" />
     <div v-for="(img, key) in images" :key="key">
       <ImgBlock
         :alt="img.alt"
@@ -10,31 +21,41 @@
         :height="img.height"
       />
     </div>
-    <MainInfo :content="content" />
   </div>
 </template>
 
 <script>
 import MainInfo from "./components/MainInfo.vue";
 import ImgBlock from "./components/ImgBlock.vue";
+import Thumbnail from "./components/Thumbnail.vue";
 import axios from "axios";
 
 var url = "https://en.wikipedia.org/w/api.php";
+
+function PxToRem(px) {
+  return px * 0.0625;
+}
 
 export default {
   name: "App",
   components: {
     ImgBlock,
     MainInfo,
+    Thumbnail,
   },
   data() {
     return {
+      title: null,
+      subject: "Pedro_II_of_Brazil",
       content: null,
+      thumbnail: null,
       images: [],
+      category: "",
+      summary: null,
     };
   },
   methods: {
-    getData(mainSubject) {
+    getContent(mainSubject) {
       const params = {
         origin: "*",
         action: "query",
@@ -81,7 +102,6 @@ export default {
           return obj_text;
         }
 
-        console.log("final obj: ", TextToObj(res_text, 2));
         const final_obj = {
           title:
             res.data.query.pages[Object.keys(res.data.query.pages)[0]].title,
@@ -95,7 +115,6 @@ export default {
         origin: "*",
         action: "query",
         titles: mainSubject,
-        // prop: "pageimages",
         format: "json",
         prop: "images",
         imdir: "descending",
@@ -105,7 +124,6 @@ export default {
       axios
         .get(url, { params })
         .then((res) => {
-          console.log("res: ", res);
           let data =
             res.data.query.pages[Object.keys(res.data.query.pages)[0]].images;
           for (let image in data) {
@@ -121,14 +139,13 @@ export default {
               let img =
                 res.data.query.pages[Object.keys(res.data.query.pages)[0]]
                   .imageinfo[0];
-              console.log(img);
               this.images.push({
                 alt: data[image].title,
                 src: img.url,
                 description:
                   img.extmetadata.ImageDescription.value || "no description",
-                height: img.height,
-                width: img.width,
+                height: PxToRem(img.height),
+                width: PxToRem(img.width),
               });
             });
           }
@@ -137,21 +154,40 @@ export default {
           console.log(error);
         });
     },
+    getThumbnail(mainSubject) {
+      const params = {
+        origin: "*",
+        action: "query",
+        format: "json",
+        prop: "pageimages",
+        titles: mainSubject,
+        pithumbsize: "1000",
+      };
+
+      axios.get(url, { params }).then((res) => {
+        console.log("w: ", window.innerWidth, " h: ", window.innerHeight);
+        let img = res.data.query.pages[Object.keys(res.data.query.pages)[0]];
+        this.thumbnail = {
+          alt: img.title,
+          src: img.thumbnail.source,
+          description: img.title,
+        };
+        console.log("thumb: ", this.thumbnail);
+      });
+    },
   },
   mounted() {
-    this.getData("Earth");
-    this.getImages("Earth");
+    this.getContent(this.subject);
+    this.getImages(this.subject);
+    this.getThumbnail(this.subject);
   },
 };
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Roboto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
