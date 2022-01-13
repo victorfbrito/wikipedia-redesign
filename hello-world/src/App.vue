@@ -2,7 +2,13 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png" />
     <div v-for="(img, key) in images" :key="key">
-      <ImgBlock :alt="img.alt" :url_src="img.src" />
+      <ImgBlock
+        :alt="img.alt"
+        :url_src="img.src"
+        :description="img.description"
+        :width="img.width"
+        :height="img.height"
+      />
     </div>
     <MainInfo :content="content" />
   </div>
@@ -29,7 +35,7 @@ export default {
   },
   methods: {
     getData(mainSubject) {
-      let params = {
+      const params = {
         origin: "*",
         action: "query",
         format: "json",
@@ -38,6 +44,7 @@ export default {
         explaintext: "1",
         exsectionformat: "wiki",
       };
+
       axios.get(url, { params }).then((res) => {
         let res_text =
           res.data.query.pages[Object.keys(res.data.query.pages)[0]].extract;
@@ -82,61 +89,58 @@ export default {
         };
         this.content = final_obj;
       });
-      // ----- GET IMAGES
-
-      // params = {
-      //   origin: "*",
-      //   action: "query",
-      //   prop: "image",
-      //   titles: mainSubject,
-      //   format: "json",
-      // };
-
-      params = {
+    },
+    getImages(mainSubject) {
+      let params = {
         origin: "*",
         action: "query",
         titles: mainSubject,
-        generator: "images",
-        prop: "imageinfo",
-        iiprop: "url|dimensions|mime",
+        // prop: "pageimages",
         format: "json",
+        prop: "images",
+        imdir: "descending",
+        imlimit: "20",
       };
 
-      axios.get(url, { params }).then((res) => {
-        // console.log("res: ", res);
-        const data = res.data.query.pages;
-        Object.keys(data).map(function (key) {
-          return data[key];
+      axios
+        .get(url, { params })
+        .then((res) => {
+          console.log("res: ", res);
+          let data =
+            res.data.query.pages[Object.keys(res.data.query.pages)[0]].images;
+          for (let image in data) {
+            params = {
+              origin: "*",
+              action: "query",
+              titles: data[image].title,
+              prop: "imageinfo",
+              iiprop: "url|extmetadata|dimensions",
+              format: "json",
+            };
+            axios.get(url, { params }).then((res) => {
+              let img =
+                res.data.query.pages[Object.keys(res.data.query.pages)[0]]
+                  .imageinfo[0];
+              console.log(img);
+              this.images.push({
+                alt: data[image].title,
+                src: img.url,
+                description:
+                  img.extmetadata.ImageDescription.value || "no description",
+                height: img.height,
+                width: img.width,
+              });
+            });
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
         });
-        // const data =
-        //   res.data.query.pages[Object.keys(res.data.query.pages)[0]].images;
-        //   for (let image in data) {
-        //     console.log(data[image].title);
-        //     params = {
-        //       origin: "*",
-        //       action: "query",
-        //       titles: data[image].title,
-        //       prop: "imageinfo",
-        //       iiprop: "url",
-        //       format: "json",
-        //     };
-        //     axios.get(url, { params }).then((res) => {
-        //       this.images.push({
-        //         alt: data[image].title,
-        //         src: res.data.query.pages[Object.keys(res.data.query.pages)[0]]
-        //           .imageinfo[0].url,
-        //       });
-        //     });
-        //   }
-        // })
-        // .catch(function (error) {
-        //   console.log(error);
-        //
-      });
     },
   },
   mounted() {
-    this.getData("Pedro_II_of_Brazil");
+    this.getData("Earth");
+    this.getImages("Earth");
   },
 };
 </script>
