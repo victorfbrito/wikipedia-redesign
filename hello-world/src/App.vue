@@ -47,7 +47,7 @@ export default {
   data() {
     return {
       title: null,
-      subject: "Harry_Styles",
+      subject: "Campinas",
       content: null,
       thumbnail: null,
       main_container: null,

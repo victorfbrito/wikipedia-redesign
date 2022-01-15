@@ -99,13 +99,11 @@ export default {
 }
 
 .background_image {
-  /* position: absolute; */
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  width: 100%;
   min-width: 100vw;
   min-height: 100vh;
+  object-fit: cover;
 }
 
 .main_content {
