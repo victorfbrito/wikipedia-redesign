@@ -20,7 +20,7 @@
       }"
     >
       <h1 class="title_xxl">{{ title }}</h1>
-      <p>{{ summary }}</p>
+      <p v-html="summary">{{ summary }}</p>
     </div>
   </div>
 </template>

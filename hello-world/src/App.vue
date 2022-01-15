@@ -63,6 +63,21 @@ export default {
     },
   },
   methods: {
+    getIntro(mainSubject) {
+      const params = {
+        origin: "*",
+        action: "query",
+        format: "json",
+        prop: "extracts|pageviews",
+        titles: mainSubject,
+        exintro: "1",
+      };
+      axios.get(url, { params }).then((res) => {
+        const page = res.data.query.pages[Object.keys(res.data.query.pages)[0]];
+        this.title = page.title;
+        this.summary = page.extract;
+      });
+    },
     getContent(mainSubject) {
       const params = {
         origin: "*",
@@ -74,8 +89,6 @@ export default {
 
       axios.get(url, { params }).then((res) => {
         const page = res.data.query.pages[Object.keys(res.data.query.pages)[0]];
-        console.log("reeeees: ", page.extract.split("</p>"));
-        this.title = page.title;
         this.content = page.extract;
       });
     },
@@ -116,35 +129,6 @@ export default {
         });
       return array;
     },
-    // getThumbnail(mainSubject) {
-    //   const params = {
-    //     origin: "*",
-    //     action: "query",
-    //     format: "json",
-    //     prop: "pageimages",
-    //     titles: mainSubject,
-    //     pithumbsize: "1000",
-    //   };
-
-    //   axios
-    //     .get(url, { params })
-    //     .then((res) => {
-    //       let img = res.data.query.pages[Object.keys(res.data.query.pages)[0]];
-    //       console.log("img: ", img);
-    //       this.thumbnail = {
-    //         alt: img.title,
-    //         src: img.thumbnail.source,
-    //         description: img.title,
-    //       };
-    //     })
-    //     .catch(function () {
-    //       this.thumbnail = {
-    //         alt: "undefined",
-    //         src: undefined,
-    //         description: "undefined",
-    //       };
-    //     });
-    // },
     getMainImage() {
       let img = {
         alt: "",
@@ -167,6 +151,7 @@ export default {
     this.getImages(this.subject);
   },
   mounted() {
+    this.getIntro(this.subject);
     this.getContent(this.subject);
     this.getImages(this.subject);
     // this.getThumbnail(this.subject);
