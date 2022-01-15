@@ -1,16 +1,18 @@
 <template>
   <div id="app">
     <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
-    <Thumbnail
-      v-if="thumbnail"
-      :alt="thumbnail.alt"
-      :url_src="thumbnail.src"
-      :description="thumbnail.description"
-      :title="content.title"
-      :width="thumbnail.width"
-      :height="thumbnail.height"
-      :summary="content.intro"
+    <MainImage
+      v-if="main_container"
+      :alt="main_container.alt"
+      :images="images"
+      :description="main_container.description"
+      :title="title"
+      :url_src="main_container.src"
+      :width="main_container.width"
+      :height="main_container.height"
+      :summary="summary"
     />
+    <div v-html="content" class="main_content">{{ content }}</div>
     <MainInfo :content="content" />
     <div v-for="(img, key) in images" :key="key">
       <ImgBlock
@@ -25,12 +27,12 @@
 </template>
 
 <script>
-import MainInfo from "./components/MainInfo.vue";
 import ImgBlock from "./components/ImgBlock.vue";
-import Thumbnail from "./components/Thumbnail.vue";
+import MainImage from "./components/MainImage.vue";
 import axios from "axios";
 
-var url = "https://en.wikipedia.org/w/api.php";
+var lng = "en";
+var url = "https://" + lng + ".wikipedia.org/w/api.php";
 
 function PxToRem(px) {
   return px * 0.0625;
@@ -40,19 +42,25 @@ export default {
   name: "App",
   components: {
     ImgBlock,
-    MainInfo,
-    Thumbnail,
+    MainImage,
   },
   data() {
     return {
       title: null,
-      subject: "Pedro_II_of_Brazil",
+      subject: "Harry_Styles",
       content: null,
       thumbnail: null,
+      main_container: null,
       images: [],
       category: "",
       summary: null,
     };
+  },
+
+  watch: {
+    images: function () {
+      this.getMainImage();
+    },
   },
   methods: {
     getContent(mainSubject) {
@@ -62,124 +70,106 @@ export default {
         format: "json",
         prop: "extracts",
         titles: mainSubject,
-        explaintext: "1",
-        exsectionformat: "wiki",
       };
 
       axios.get(url, { params }).then((res) => {
-        let res_text =
-          res.data.query.pages[Object.keys(res.data.query.pages)[0]].extract;
-        res_text = res_text
-          .replaceAll("======", "=h6=")
-          .replaceAll("=====", "=h5=")
-          .replaceAll("====", "=h4=")
-          .replaceAll("===", "=h3=")
-          .replaceAll("==", "=h2=");
-
-        function TextToObj(text, carry) {
-          let obj_text = { topics: [] };
-          let raw_text = text.split(`=h${carry}=`);
-          if (raw_text.length <= 1) {
-            return raw_text[0];
-          }
-
-          raw_text = raw_text.map((e) => e.trim());
-
-          if (raw_text.length % 2 != 0) {
-            obj_text.intro = raw_text[0];
-            raw_text.shift();
-          }
-
-          for (let i = 0; i < raw_text.length; i += 2) {
-            obj_text.topics.push({
-              title: raw_text[i],
-              content:
-                carry < 6
-                  ? TextToObj(raw_text[i + 1], carry + 1)
-                  : raw_text[i + 1],
-            });
-          }
-          return obj_text;
-        }
-
-        const final_obj = {
-          title:
-            res.data.query.pages[Object.keys(res.data.query.pages)[0]].title,
-          ...TextToObj(res_text, 2),
-        };
-        this.content = final_obj;
+        const page = res.data.query.pages[Object.keys(res.data.query.pages)[0]];
+        console.log("reeeees: ", page.extract.split("</p>"));
+        this.title = page.title;
+        this.content = page.extract;
       });
     },
     getImages(mainSubject) {
       let params = {
         origin: "*",
         action: "query",
-        titles: mainSubject,
         format: "json",
-        prop: "images",
-        imdir: "descending",
-        imlimit: "20",
+        titles: mainSubject,
+        prop: "info|imageinfo",
+        generator: "images",
+        iiprop: "url|extmetadata|dimensions",
+        gimdir: "descending",
       };
-
+      let array = [];
       axios
         .get(url, { params })
         .then((res) => {
-          let data =
-            res.data.query.pages[Object.keys(res.data.query.pages)[0]].images;
+          console.log("original: ", res);
+          let data = res.data.query.pages;
+          Object.entries(data).map(([k, v]) => ({ [k]: v }));
           for (let image in data) {
-            params = {
-              origin: "*",
-              action: "query",
-              titles: data[image].title,
-              prop: "imageinfo",
-              iiprop: "url|extmetadata|dimensions",
-              format: "json",
-            };
-            axios.get(url, { params }).then((res) => {
-              let img =
-                res.data.query.pages[Object.keys(res.data.query.pages)[0]]
-                  .imageinfo[0];
-              this.images.push({
-                alt: data[image].title,
-                src: img.url,
-                description:
-                  img.extmetadata.ImageDescription.value || "no description",
-                height: PxToRem(img.height),
-                width: PxToRem(img.width),
-              });
+            array.push({
+              alt: data[image].title,
+              src: data[image].imageinfo[0].url,
+              description:
+                data[image].imageinfo[0].extmetadata?.ImageDescription?.value ||
+                "no description",
+              height: PxToRem(data[image].imageinfo[0].height),
+              width: PxToRem(data[image].imageinfo[0].width),
             });
           }
+          this.images = array;
         })
+        // .then(() => this.getMainImage())
         .catch(function (error) {
           console.log(error);
         });
+      return array;
     },
-    getThumbnail(mainSubject) {
-      const params = {
-        origin: "*",
-        action: "query",
-        format: "json",
-        prop: "pageimages",
-        titles: mainSubject,
-        pithumbsize: "1000",
-      };
+    // getThumbnail(mainSubject) {
+    //   const params = {
+    //     origin: "*",
+    //     action: "query",
+    //     format: "json",
+    //     prop: "pageimages",
+    //     titles: mainSubject,
+    //     pithumbsize: "1000",
+    //   };
 
-      axios.get(url, { params }).then((res) => {
-        console.log("w: ", window.innerWidth, " h: ", window.innerHeight);
-        let img = res.data.query.pages[Object.keys(res.data.query.pages)[0]];
-        this.thumbnail = {
-          alt: img.title,
-          src: img.thumbnail.source,
-          description: img.title,
-        };
-        console.log("thumb: ", this.thumbnail);
+    //   axios
+    //     .get(url, { params })
+    //     .then((res) => {
+    //       let img = res.data.query.pages[Object.keys(res.data.query.pages)[0]];
+    //       console.log("img: ", img);
+    //       this.thumbnail = {
+    //         alt: img.title,
+    //         src: img.thumbnail.source,
+    //         description: img.title,
+    //       };
+    //     })
+    //     .catch(function () {
+    //       this.thumbnail = {
+    //         alt: "undefined",
+    //         src: undefined,
+    //         description: "undefined",
+    //       };
+    //     });
+    // },
+    getMainImage() {
+      let img = {
+        alt: "",
+        description: "",
+        height: 0,
+        width: 0,
+        src: null,
+      };
+      Array.from(this.images).some((e) => {
+        if (e.width > img.width && e.height > img.height) {
+          img = e;
+          if (e.width >= window.innerWidth) return true;
+          return false;
+        }
       });
+      this.main_container = img;
     },
+  },
+  beforeMount() {
+    this.getImages(this.subject);
   },
   mounted() {
     this.getContent(this.subject);
     this.getImages(this.subject);
-    this.getThumbnail(this.subject);
+    // this.getThumbnail(this.subject);
   },
 };
 </script>

@@ -6,7 +6,9 @@
       :alt="alt"
       :style="{ width: width + 'rem', height: height + 'rem' }"
     />
-    <p>{{ description }}</p>
+    <p class="primary subtitle" v-html="description">
+      {{ description }}
+    </p>
   </div>
 </template>
 
@@ -19,7 +21,7 @@ export default {
 
 <style scoped>
 #image_block {
-  width: 100px;
-  height: 100px;
+  /* width: 100px;
+  height: 100px; */
 }
 </style>

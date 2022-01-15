@@ -1,12 +1,17 @@
 <template>
   <div
-    id="thumb_container"
-    class="thumb_container"
-    :class="{ primary: dark_text, base: !dark_text }"
+    id="main_container"
+    class="main_container"
+    :class="{ primary: dark, base: !dark, black_bg: dark, white_bg: !dark }"
   >
-    <img id="thumb_img" :src="url_src" :alt="alt" class="thumb_img" />
+    <img
+      id="background_image"
+      :src="url_src"
+      :alt="alt"
+      class="background_image"
+    />
     <div
-      class="thumb_content"
+      class="main_content"
       :style="{
         backgroundImage:
           '-webkit-radial-gradient(circle, transparent, ' +
@@ -21,7 +26,7 @@
 </template>
 
 <script>
-import FastAverageColor from "../../node_modules/fast-average-color/dist/index.js";
+import FastAverageColor from "fast-average-color";
 
 function componentToHex(c) {
   var hex = c.toString(16);
@@ -32,6 +37,7 @@ function rgbToHex(r, g, b) {
   return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 
+// eslint-disable-next-line no-unused-vars
 function harmonizeColor(rgb) {
   const R = rgb[0];
   const G = rgb[1];
@@ -46,19 +52,19 @@ function harmonizeColor(rgb) {
 }
 
 export default {
-  name: "Thumbnail",
+  name: "MainImage",
   props: [
     "alt",
     "title",
-    "url_src",
     "description",
     "width",
     "height",
+    "url_src",
     "summary",
   ],
   data() {
     return {
-      dark_text: false,
+      dark: false,
       background_color: "#000",
     };
   },
@@ -68,8 +74,9 @@ export default {
       fac
         .getColorAsync(imgurl)
         .then((color) => {
-          this.background_color = harmonizeColor(color.value);
-          this.dark_text = color.isDark ? true : false;
+          // this.background_color = harmonizeColor(color.value);
+          this.background_color = color.isDark ? "#fff" : "#000";
+          this.dark = color.isDark ? true : false;
         })
         .catch((e) => {
           console.log(e);
@@ -83,22 +90,25 @@ export default {
 </script>
 
 <style scoped>
-.thumb_container {
+.main_container {
   display: flex;
   overflow: hidden;
+  position: relative;
   width: 100vw;
   height: 100vh;
-  background-size: cover;
 }
 
-.thumb_img {
+.background_image {
+  /* position: absolute; */
   position: absolute;
-  right: 0;
-  max-width: 100vw;
-  max-height: 100vh;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100vw;
+  min-height: 100vh;
 }
 
-.thumb_content {
+.main_content {
   position: absolute;
   width: 100vw;
   height: 100vh;
