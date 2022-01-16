@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-    <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
-    <MainImage
+    <ArticleBanner
       v-if="main_container"
       :alt="main_container.alt"
       :images="images"
@@ -28,7 +27,7 @@
 
 <script>
 import ImgBlock from "./components/ImgBlock.vue";
-import MainImage from "./components/MainImage.vue";
+import ArticleBanner from "./components/ArticleBanner.vue";
 import axios from "axios";
 
 var lng = "en";
@@ -42,12 +41,12 @@ export default {
   name: "App",
   components: {
     ImgBlock,
-    MainImage,
+    ArticleBanner,
   },
   data() {
     return {
       title: null,
-      subject: "Campinas",
+      subject: "Jesus",
       content: null,
       thumbnail: null,
       main_container: null,
