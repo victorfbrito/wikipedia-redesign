@@ -1,15 +1,17 @@
 <template>
   <div id="app">
     <ArticleBanner
-      v-if="main_container"
-      :alt="main_container.alt"
+      v-if="banner_image"
+      :alt="banner_image.alt"
       :images="images"
-      :description="main_container.description"
+      :description="banner_image.description"
       :title="title"
-      :url_src="main_container.src"
-      :width="main_container.width"
-      :height="main_container.height"
+      :url_src="banner_image.src"
+      :width="banner_image.width"
+      :height="banner_image.height"
       :summary="summary"
+      :views="views"
+      :last_updated="last_updated"
     />
     <div v-html="content" class="main_content">{{ content }}</div>
     <MainInfo :content="content" />
@@ -26,9 +28,11 @@
 </template>
 
 <script>
+import axios from "axios";
+import moment from "moment";
+
 import ImgBlock from "./components/ImgBlock.vue";
 import ArticleBanner from "./components/ArticleBanner.vue";
-import axios from "axios";
 
 var lng = "en";
 var url = "https://" + lng + ".wikipedia.org/w/api.php";
@@ -48,47 +52,47 @@ export default {
       title: null,
       subject: "Jesus",
       content: null,
-      thumbnail: null,
-      main_container: null,
+      banner_image: null,
       images: [],
       category: "",
       summary: null,
+      last_updated: null,
+      views: 0,
     };
   },
-
   watch: {
     images: function () {
       this.getMainImage();
     },
   },
   methods: {
-    getIntro(mainSubject) {
+    getContent(mainSubject) {
       const params = {
         origin: "*",
         action: "query",
         format: "json",
         prop: "extracts|pageviews",
         titles: mainSubject,
-        exintro: "1",
-      };
-      axios.get(url, { params }).then((res) => {
-        const page = res.data.query.pages[Object.keys(res.data.query.pages)[0]];
-        this.title = page.title;
-        this.summary = page.extract;
-      });
-    },
-    getContent(mainSubject) {
-      const params = {
-        origin: "*",
-        action: "query",
-        format: "json",
-        prop: "extracts",
-        titles: mainSubject,
+        list: "recentchanges",
+        rctitle: mainSubject,
+        rctoponly: "1",
+        rclimit: "1",
+        rcprop: "user|timestamp",
       };
 
       axios.get(url, { params }).then((res) => {
         const page = res.data.query.pages[Object.keys(res.data.query.pages)[0]];
+        this.title = page.title;
         this.content = page.extract;
+        const split_str = "<p>";
+        this.summary = split_str.concat(page.extract.split("<p>")[1]);
+        this.views = Object.values(page.pageviews).reduce((a, b) => a + b);
+        this.last_updated = {
+          user: res.data.query.recentchanges[0].user,
+          date: moment(res.data.query.recentchanges[0].timestamp).format(
+            "DD MMM YYYY"
+          ),
+        };
       });
     },
     getImages(mainSubject) {
@@ -106,7 +110,6 @@ export default {
       axios
         .get(url, { params })
         .then((res) => {
-          console.log("original: ", res);
           let data = res.data.query.pages;
           Object.entries(data).map(([k, v]) => ({ [k]: v }));
           for (let image in data) {
@@ -122,7 +125,6 @@ export default {
           }
           this.images = array;
         })
-        // .then(() => this.getMainImage())
         .catch(function (error) {
           console.log(error);
         });
@@ -143,14 +145,10 @@ export default {
           return false;
         }
       });
-      this.main_container = img;
+      this.banner_image = img;
     },
   },
-  beforeMount() {
-    this.getImages(this.subject);
-  },
   mounted() {
-    this.getIntro(this.subject);
     this.getContent(this.subject);
     this.getImages(this.subject);
     // this.getThumbnail(this.subject);

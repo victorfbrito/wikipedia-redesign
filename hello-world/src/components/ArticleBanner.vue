@@ -11,7 +11,7 @@
       class="background_image"
     />
     <div
-      class="main_content"
+      class="banner_content"
       :style="{
         backgroundImage:
           '-webkit-radial-gradient(circle, transparent, ' +
@@ -19,8 +19,15 @@
           ')',
       }"
     >
-      <h1 class="title_xxl">{{ title }}</h1>
-      <p v-html="summary">{{ summary }}</p>
+      <div class="info">
+        <p class="text_m" v-if="last_updated">
+          Last updated by <b>{{ last_updated.user }}</b> at
+          <b>{{ last_updated.date }}</b>
+        </p>
+        <h1 class="title_xxl title">{{ title }}</h1>
+        <p class="text_s views" v-if="views">{{ views }} views last month</p>
+        <div class="summary text_m" v-html="summary">{{ summary }}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -61,6 +68,8 @@ export default {
     "height",
     "url_src",
     "summary",
+    "views",
+    "last_updated",
   ],
   data() {
     return {
@@ -92,24 +101,62 @@ export default {
 <style scoped>
 .main_container {
   display: flex;
-  overflow: hidden;
-  position: relative;
   width: 100vw;
   height: 100vh;
 }
 
 .background_image {
-  position: absolute;
+  /* position: absolute; */
   width: 100%;
   min-width: 100vw;
   min-height: 100vh;
   object-fit: cover;
 }
 
-.main_content {
+.banner_content {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: absolute;
-  width: 100vw;
-  height: 100vh;
+  height: 100%;
   z-index: 1;
+  padding: var(--size10);
+}
+
+.info {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.summary {
+  margin-top: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.views {
+  display: flex;
+  align-items: center;
+  gap: var(--size2);
+}
+
+.views:before {
+  display: block;
+  content: " ";
+  height: var(--size1);
+  width: var(--size1);
+  background-color: white;
+  -webkit-mask-image: url("../assets/search_icon.svg");
+  mask-image: url("../assets/search_icon.svg");
+  background-size: var(--size1);
+}
+
+@media screen and (min-width: 992px) {
+  .info {
+    margin-right: 50%;
+  }
 }
 </style>
