@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <ArticleBanner
+    <article-banner
       v-if="banner_image"
       :alt="banner_image.alt"
       :images="images"
@@ -14,9 +14,8 @@
       :last_updated="last_updated"
     />
     <div v-html="content" class="main_content">{{ content }}</div>
-    <MainInfo :content="content" />
     <div v-for="(img, key) in images" :key="key">
-      <ImgBlock
+      <img-block
         :alt="img.alt"
         :url_src="img.src"
         :description="img.description"
@@ -104,7 +103,7 @@ export default {
         prop: "info|imageinfo",
         generator: "images",
         iiprop: "url|extmetadata|dimensions",
-        gimdir: "descending",
+        gimdir: "ascending",
       };
       let array = [];
       axios
@@ -151,7 +150,6 @@ export default {
   mounted() {
     this.getContent(this.subject);
     this.getImages(this.subject);
-    // this.getThumbnail(this.subject);
   },
 };
 </script>

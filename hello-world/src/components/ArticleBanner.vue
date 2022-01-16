@@ -1,9 +1,5 @@
 <template>
-  <div
-    id="main_container"
-    class="main_container"
-    :class="{ primary: dark, base: !dark, black_bg: dark, white_bg: !dark }"
-  >
+  <div id="main_container" class="main_container base white_bg">
     <img
       id="background_image"
       :src="url_src"
@@ -13,10 +9,7 @@
     <div
       class="banner_content"
       :style="{
-        backgroundImage:
-          '-webkit-radial-gradient(circle, transparent, ' +
-          this.background_color +
-          ')',
+        backgroundImage: 'radial-gradient(circle at 65%, transparent, #000)',
       }"
     >
       <div class="info">
@@ -27,38 +20,17 @@
         <h1 class="title_xxl title">{{ title }}</h1>
         <p class="text_s views" v-if="views">{{ views }} views last month</p>
         <div class="summary text_m" v-html="summary">{{ summary }}</div>
+        <big-button-carroussel />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import FastAverageColor from "fast-average-color";
-
-function componentToHex(c) {
-  var hex = c.toString(16);
-  return hex.length == 1 ? "0" + hex : hex;
-}
-
-function rgbToHex(r, g, b) {
-  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-}
-
-// eslint-disable-next-line no-unused-vars
-function harmonizeColor(rgb) {
-  const R = rgb[0];
-  const G = rgb[1];
-  const B = rgb[2];
-  if ((R + G + B) / 3 <= 64) {
-    return "#fff";
-  } else if ((R + G + B) / 3 >= 701) {
-    return "#000";
-  } else {
-    return rgbToHex(R, G, B);
-  }
-}
+import BigButtonCarroussel from "./BigButtonCarroussel.vue";
 
 export default {
+  components: { BigButtonCarroussel },
   name: "MainImage",
   props: [
     "alt",
@@ -71,30 +43,6 @@ export default {
     "views",
     "last_updated",
   ],
-  data() {
-    return {
-      dark: false,
-      background_color: "#000",
-    };
-  },
-  methods: {
-    getAverageColor(imgurl) {
-      const fac = new FastAverageColor();
-      fac
-        .getColorAsync(imgurl)
-        .then((color) => {
-          // this.background_color = harmonizeColor(color.value);
-          this.background_color = color.isDark ? "#fff" : "#000";
-          this.dark = color.isDark ? true : false;
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    },
-  },
-  mounted() {
-    this.getAverageColor(this.url_src);
-  },
 };
 </script>
 
@@ -119,7 +67,7 @@ export default {
   flex-direction: column;
   align-items: center;
   position: absolute;
-  height: 100%;
+  height: 100vh;
   z-index: 1;
   padding: var(--size10);
 }
@@ -140,7 +88,8 @@ export default {
 .views {
   display: flex;
   align-items: center;
-  gap: var(--size2);
+  gap: var(--size1);
+  margin: 0;
 }
 
 .views:before {
@@ -148,9 +97,7 @@ export default {
   content: " ";
   height: var(--size1);
   width: var(--size1);
-  background-color: white;
-  -webkit-mask-image: url("../assets/search_icon.svg");
-  mask-image: url("../assets/search_icon.svg");
+  background-image: url("../assets/search_icon.svg");
   background-size: var(--size1);
 }
 
