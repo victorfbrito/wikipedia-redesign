@@ -35,7 +35,7 @@ import ImgBlock from "./components/ImgBlock.vue";
 import ArticleBanner from "./components/ArticleBanner.vue";
 import WikiHeader from "./components/WikiHeader.vue";
 
-var lng = "en";
+var lng = "pt";
 var url = "https://" + lng + ".wikipedia.org/w/api.php";
 
 function PxToRem(px) {
@@ -52,7 +52,7 @@ export default {
   data() {
     return {
       title: null,
-      subject: "Jesus",
+      subject: "Rio_de_Janeiro",
       content: null,
       banner_image: null,
       images: [],

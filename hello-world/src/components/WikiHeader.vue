@@ -1,7 +1,7 @@
 <template>
   <div id="main" class="header">
     <img class="icon" src="../assets/wikipedia_logo_1.svg" />
-    <wiki-header-redirects />
+    <wiki-header-redirects v-if='desktop'/>
     <search-bar />
   </div>
 </template>
@@ -14,6 +14,26 @@ export default {
   components: { WikiHeaderRedirects, SearchBar },
   name: "WikiHeader",
   props: [],
+  data() {
+    return {
+      desktop: false
+    }
+},
+  methods: {
+    onResize() {
+    if (window.innerWidth > 992) {
+      this.desktop = true
+    } else {
+      this.desktop = false
+    }
+  }
+  },
+  created() {
+    window.addEventListener('resize', this.onResize)
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.onResize)
+  },
 };
 </script>
 

@@ -57,6 +57,10 @@ export default {
 </script>
 
 <style scoped>
+
+.title {
+}
+
 .main_container {
   position: relative;
   display: flex;
@@ -88,6 +92,7 @@ export default {
 
 .info {
   height: 100%;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
