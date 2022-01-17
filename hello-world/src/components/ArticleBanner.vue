@@ -1,17 +1,16 @@
 <template>
-  <div id="main_container" class="main_container base white_bg">
-    <img
-      id="background_image"
-      :src="url_src"
-      :alt="alt"
-      class="background_image"
-    />
-    <div
-      class="banner_content"
-      :style="{
-        backgroundImage: 'radial-gradient(circle at 65%, transparent, #000)',
-      }"
-    >
+  <div id="main_container" class="main_container base">
+    <transition name="fade">
+      <img
+        v-on:load="onLoaded"
+        v-show="loaded"
+        id="background_image"
+        :src="url_src"
+        :alt="alt"
+        class="background_image"
+      />
+    </transition>
+    <div class="banner_content">
       <div class="info">
         <p class="text_m" v-if="last_updated">
           Last updated by <b>{{ last_updated.user }}</b> at
@@ -22,6 +21,7 @@
         <div class="summary text_m" v-html="summary">{{ summary }}</div>
         <big-button-carroussel />
       </div>
+      <div class="article_arrow button_m_bold">Read article</div>
     </div>
   </div>
 </template>
@@ -43,25 +43,40 @@ export default {
     "views",
     "last_updated",
   ],
+  data: function () {
+    return {
+      loaded: false,
+    };
+  },
+  methods: {
+    onLoaded() {
+      this.loaded = true;
+    },
+  },
 };
 </script>
 
 <style scoped>
 .main_container {
+  position: relative;
   display: flex;
   width: 100vw;
   height: 100vh;
+  background-color: var(--primary);
+  overflow: hidden;
 }
 
 .background_image {
-  /* position: absolute; */
+  position: absolute;
   width: 100%;
   min-width: 100vw;
   min-height: 100vh;
   object-fit: cover;
+  /* transform: translate(-50%, -50%); */
 }
 
 .banner_content {
+  background-image: radial-gradient(circle at 70%, transparent, #000);
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -77,6 +92,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-right: 50%;
 }
 
 .summary {
@@ -101,9 +117,32 @@ export default {
   background-size: var(--size1);
 }
 
-@media screen and (min-width: 992px) {
+.article_arrow {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--size1);
+  margin: var(--size4);
+  align-items: center;
+}
+
+.article_arrow:after {
+  display: block;
+  content: " ";
+  background-image: url("../assets/circled_arrow.svg");
+  background-size: var(--size2);
+  height: var(--size2);
+  width: var(--size2);
+}
+
+@media screen and (max-width: 992px) {
   .info {
-    margin-right: 50%;
+    margin-right: 0%;
+  }
+
+  .banner_content {
+    padding: var(--size4);
   }
 }
 </style>

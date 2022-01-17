@@ -1,6 +1,10 @@
 
 * {
 
+  font-family: Roboto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
   /* --- Spacing --- */
   
   transition: 0.2s;
@@ -118,4 +122,18 @@ h4 {
 
 .shadow {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* --- Animations --- */
+
+.fade-enter-active {
+  transition: opacity 1s ease-in-out;
+}
+
+.fade-enter-to {
+  opacity: 1;
+}
+
+.fade-enter {
+  opacity: 0;
 }

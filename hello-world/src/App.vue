@@ -14,7 +14,7 @@
       :last_updated="last_updated"
     />
     <div v-html="content" class="main_content">{{ content }}</div>
-    <div v-for="(img, key) in images" :key="key">
+    <div class="default_images" v-for="(img, key) in images" :key="key">
       <img-block
         :alt="img.alt"
         :url_src="img.src"
@@ -83,8 +83,6 @@ export default {
         const page = res.data.query.pages[Object.keys(res.data.query.pages)[0]];
         this.title = page.title;
         this.content = page.extract;
-        const split_str = "<p>";
-        this.summary = split_str.concat(page.extract.split("<p>")[1]);
         this.views = Object.values(page.pageviews).reduce((a, b) => a + b);
         this.last_updated = {
           user: res.data.query.recentchanges[0].user,
@@ -92,6 +90,21 @@ export default {
             "DD MMM YYYY"
           ),
         };
+      });
+    },
+    getIntro(mainSubject) {
+      const params = {
+        origin: "*",
+        action: "query",
+        format: "json",
+        prop: "extracts",
+        titles: mainSubject,
+        exintro: "1",
+        exsentences: "3",
+      };
+      axios.get(url, { params }).then((res) => {
+        this.summary =
+          res.data.query.pages[Object.keys(res.data.query.pages)[0]].extract;
       });
     },
     getImages(mainSubject) {
@@ -117,7 +130,7 @@ export default {
               src: data[image].imageinfo[0].url,
               description:
                 data[image].imageinfo[0].extmetadata?.ImageDescription?.value ||
-                "no description",
+                "no description available",
               height: PxToRem(data[image].imageinfo[0].height),
               width: PxToRem(data[image].imageinfo[0].width),
             });
@@ -148,6 +161,7 @@ export default {
     },
   },
   mounted() {
+    this.getIntro(this.subject);
     this.getContent(this.subject);
     this.getImages(this.subject);
   },
@@ -155,9 +169,23 @@ export default {
 </script>
 
 <style>
+.v-lazy-image {
+  opacity: 0;
+  transition: opacity 2s;
+}
+.v-lazy-image-loaded {
+  opacity: 1;
+}
 #app {
-  font-family: Roboto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+.default_images {
+  overflow: hidden;
+  background-color: red;
+  width: 100vw;
+}
+.default_images img {
+  max-width: 100vw;
 }
 </style>
