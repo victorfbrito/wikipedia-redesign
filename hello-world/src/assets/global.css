@@ -1,5 +1,6 @@
 
 * {
+  box-sizing: border-box;
 
   font-family: Roboto;
   -webkit-font-smoothing: antialiased;
@@ -120,9 +121,14 @@ h4 {
   border-radius: 0.375rem;
 }
 
-.shadow {
+.dark_shadow {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+
+.light_shadow {
+  box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.2), 0 6px 20px 0 rgba(255, 255, 255, 0.19);
+}
+
 
 /* --- Animations --- */
 

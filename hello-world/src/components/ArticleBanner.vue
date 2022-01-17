@@ -13,7 +13,7 @@
     <div class="banner_content">
       <div class="info">
         <p class="text_m" v-if="last_updated">
-          Last updated by <b>{{ last_updated.user }}</b> at
+          Last update by <b>{{ last_updated.user }}</b> at
           <b>{{ last_updated.date }}</b>
         </p>
         <h1 class="title_xxl title">{{ title }}</h1>
@@ -72,7 +72,6 @@ export default {
   min-width: 100vw;
   min-height: 100vh;
   object-fit: cover;
-  /* transform: translate(-50%, -50%); */
 }
 
 .banner_content {

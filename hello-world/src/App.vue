@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <wiki-header />
     <article-banner
       v-if="banner_image"
       :alt="banner_image.alt"
@@ -32,6 +33,7 @@ import moment from "moment";
 
 import ImgBlock from "./components/ImgBlock.vue";
 import ArticleBanner from "./components/ArticleBanner.vue";
+import WikiHeader from "./components/WikiHeader.vue";
 
 var lng = "en";
 var url = "https://" + lng + ".wikipedia.org/w/api.php";
@@ -45,6 +47,7 @@ export default {
   components: {
     ImgBlock,
     ArticleBanner,
+    WikiHeader,
   },
   data() {
     return {
