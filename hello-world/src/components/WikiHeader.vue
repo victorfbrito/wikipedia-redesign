@@ -21,12 +21,15 @@ export default {
 },
   methods: {
     onResize() {
-    if (window.innerWidth > 992) {
-      this.desktop = true
-    } else {
-      this.desktop = false
-    }
-  }
+      if (window.innerWidth > 992) {
+        this.desktop = true
+      } else {
+        this.desktop = false
+      }
+    },
+  },
+  mounted() {
+    this.onResize()
   },
   created() {
     window.addEventListener('resize', this.onResize)

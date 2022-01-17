@@ -29,6 +29,9 @@
   --contrast: #16bfa5;
   --wikiblue: #325df9;
 
+  /* --- Other --- */
+  
+  --border: 0.375rem
 }
 
 /* --- Typography --- */
