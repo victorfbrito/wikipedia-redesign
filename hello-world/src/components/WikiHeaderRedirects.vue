@@ -87,9 +87,13 @@ export default {
   width: calc(var(--size1) / 2);
 }
 
+.submenu_button:hover {
+  cursor: default;
+}
+
 .submenu_button:hover:after {
   transition: 0.2s;
-  transform: rotateX(180deg) translateY(50%);
+  transform: rotateX(180deg) translateY(25%);
 }
 
 .redirect_button {

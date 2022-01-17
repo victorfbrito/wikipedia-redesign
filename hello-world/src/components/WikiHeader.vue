@@ -9,6 +9,7 @@
 <script>
 import SearchBar from "./SearchBar.vue";
 import WikiHeaderRedirects from "./WikiHeaderRedirects.vue";
+
 export default {
   components: { WikiHeaderRedirects, SearchBar },
   name: "WikiHeader",
@@ -20,6 +21,7 @@ export default {
 .header {
   position: absolute;
   width: 100%;
+  max-width: 100vw;
   display: flex;
   align-items: center;
   justify-content: space-between;
