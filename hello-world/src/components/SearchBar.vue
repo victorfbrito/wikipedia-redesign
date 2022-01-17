@@ -28,16 +28,23 @@ export default {
   right: calc(var(--size1) / 2);
   border: none;
   border-radius: 25px;
-  height: 0;
-  width: 0;
+  height: calc(var(--size2) * 1.5);
+  width: calc(var(--size4));
   padding: 0 var(--size1);
-  transition: height 0.1s, width 0.5s, right 0.1s;
+  right: 0;
+  opacity: 0;
+  transition: height 0.1s, width 0.5s, right 0.1s, opacity 0.5s;
+  outline: none;
+}
+
+.search_input:focus-visible {
+  border: 1px solid var(--secondary);
 }
 
 .search_bar:hover .search_input {
   height: calc(var(--size2) * 1.5);
-  width: calc(var(--size10) * 3);
-  right: 0;
+  width: calc(var(--size10) * 2.5);
+  opacity: 1;
 }
 
 .search_bar {
