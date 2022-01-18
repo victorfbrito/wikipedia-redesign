@@ -6,9 +6,7 @@
       :alt="alt"
       :style="{ width: width + 'rem', height: height + 'rem' }"
     />
-    <p class="primary subtitle" v-html="description">
-      {{ description }}
-    </p>
+    <p class="primary subtitle" v-html="description" />
   </div>
 </template>
 

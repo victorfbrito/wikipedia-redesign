@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <wiki-header />
+    <!-- <router-view></router-view> -->
     <article-banner
       v-if="banner_image"
       :alt="banner_image.alt"
@@ -14,7 +15,7 @@
       :views="views"
       :last_updated="last_updated"
     />
-    <div v-html="content" class="main_content">{{ content }}</div>
+    <div v-html="content" class="main_content" />
     <div class="default_images" v-for="(img, key) in images" :key="key">
       <img-block
         :alt="img.alt"

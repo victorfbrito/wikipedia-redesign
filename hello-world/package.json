@@ -8,10 +8,12 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@vue/compiler-sfc": "^3.2.13",
     "core-js": "^3.6.5",
     "fast-average-color": "^7.0.1",
     "moment": "^2.29.1",
-    "vue": "^2.6.11"
+    "vue": "^^3.2.13",
+    "vue-router": "4"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -20,7 +22,7 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^3.2.13"
   },
   "eslintConfig": {
     "root": true,

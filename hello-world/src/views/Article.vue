@@ -1,5 +1,5 @@
 <template>
-  <div class="main">article page</div>
+  <div class="main">article page: {{ this.$route.params.subject }}</div>
 </template>
 
 <script>

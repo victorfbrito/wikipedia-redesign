@@ -18,7 +18,7 @@
         </p>
         <h1 class="title_xxl title">{{ title }}</h1>
         <p class="text_s views" v-if="views">{{ views }} views last month</p>
-        <div class="summary text_m" v-html="summary">{{ summary }}</div>
+        <div class="summary text_m" v-html="summary" />
         <big-button-carroussel />
       </div>
       <div class="article_arrow button_m_bold">Read article</div>
@@ -57,7 +57,6 @@ export default {
 </script>
 
 <style scoped>
-
 .title {
 }
 
