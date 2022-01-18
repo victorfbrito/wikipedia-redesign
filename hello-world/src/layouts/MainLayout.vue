@@ -1,16 +1,16 @@
 <template>
-  <div id="app">
-    <!-- <wiki-header /> -->
-    <slot></slot>
+  <div id="app-layout">
+    <wiki-header />
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-// import WikiHeader from "../components/WikiHeader.vue";
+import WikiHeader from "../components/WikiHeader.vue";
 
 export default {
   name: "MainLayout",
-  // components: { WikiHeader },
+  components: { WikiHeader },
 };
 </script>
 

@@ -9,8 +9,6 @@ import MainLayout from "../layouts/MainLayout.vue";
 export default {
   components: { MainLayout },
   name: "Home",
-  computed: {},
-  methods: {},
 };
 </script>
 

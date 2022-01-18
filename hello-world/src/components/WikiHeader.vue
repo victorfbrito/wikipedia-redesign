@@ -1,7 +1,7 @@
 <template>
   <div id="main" class="header">
     <img class="icon" src="../assets/wikipedia_logo_1.svg" />
-    <wiki-header-redirects v-if='desktop'/>
+    <wiki-header-redirects v-if="desktop" />
     <search-bar />
   </div>
 </template>
@@ -11,31 +11,34 @@ import SearchBar from "./SearchBar.vue";
 import WikiHeaderRedirects from "./WikiHeaderRedirects.vue";
 
 export default {
-  components: { WikiHeaderRedirects, SearchBar },
+  components: {
+    WikiHeaderRedirects,
+    SearchBar,
+  },
   name: "WikiHeader",
   props: [],
   data() {
     return {
-      desktop: false
-    }
-},
+      desktop: false,
+    };
+  },
   methods: {
     onResize() {
       if (window.innerWidth > 992) {
-        this.desktop = true
+        this.desktop = true;
       } else {
-        this.desktop = false
+        this.desktop = false;
       }
     },
   },
   mounted() {
-    this.onResize()
+    this.onResize();
   },
   created() {
-    window.addEventListener('resize', this.onResize)
+    window.addEventListener("resize", this.onResize);
   },
   beforeDestroy() {
-    window.removeEventListener('resize', this.onResize)
+    window.removeEventListener("resize", this.onResize);
   },
 };
 </script>

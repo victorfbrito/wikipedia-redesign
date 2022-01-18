@@ -1,29 +1,35 @@
 <template>
   <div id="main" class="search_bar_container" v-click-outside="hide">
-      <input
-        class="search_input"
-        :class="isActive ? 'active_input' : 'disabled_input'"
-        v-model="search_term"
-        placeholder="Search"
-        @focus="isActive = true"
-        @blur="isActive = false"
-      />
-      <div class="results_box" v-if="isActive">
-        <div class="loading_container" v-if='isLoading'>
-          <loading-spinner /> 
-        </div>
-        <div v-else v-for="(result, index) in results" class="result" :key="index">{{result.name}}</div>
+    <input
+      class="search_input"
+      :class="isActive ? 'active_input' : 'disabled_input'"
+      v-model="search_term"
+      placeholder="Search"
+      @focus="isActive = true"
+    />
+    <div class="results_box" v-if="isActive">
+      <div class="loading_container" v-if="isLoading">
+        <loading-spinner />
       </div>
+      <div
+        v-else
+        v-for="(result, index) in results"
+        class="result"
+        :key="index"
+        v-on:click="redirectTo(result.url)"
+      >
+        {{ result.name }}
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import _ from 'lodash';
-import LoadingSpinner from './LoadingSpinner.vue';
+import _ from "lodash";
+import LoadingSpinner from "./LoadingSpinner.vue";
 
-
-var lng = "pt";
+var lng = "en";
 var url = "https://" + lng + ".wikipedia.org/w/api.php";
 
 export default {
@@ -34,12 +40,12 @@ export default {
       search_term: null,
       isLoading: false,
       results: null,
-      isActive: false
+      isActive: false,
     };
   },
   methods: {
     searchFor(query) {
-      this.isLoading = true
+      this.isLoading = true;
       if (query.length > 0) {
         try {
           const params = {
@@ -48,44 +54,56 @@ export default {
             format: "json",
             search: query,
             namespace: "0",
-          }
+          };
           axios.get(url, { params }).then((res) => {
-            let responses = []
+            let responses = [];
             for (let i = 0; i < res.data[1].length; i++) {
-              responses.push({name: res.data[1][i], url: res.data[3][i]})
+              console.log(
+                "split: ",
+                res.data[3][i].split("wikipedia.org/wiki/")
+              );
+              responses.push({
+                name: res.data[1][i],
+                url: res.data[3][i].split("wikipedia.org/wiki/").pop(),
+              });
             }
-            this.results = responses
-            this.isActive = true
-          })
+            this.results = responses;
+            this.isActive = true;
+          });
         } catch {
-          alert('error')
+          alert("error");
         }
       } else {
-        this.results = null
+        this.results = null;
       }
-      this.isLoading = false
+      this.isLoading = false;
     },
-    show: function() {
+    redirectTo: function (e) {
+      console.log(this.$router);
+      this.$router.push({ name: "Article", params: { subject: e } });
+    },
+    show: function () {
       this.isActive = true;
     },
-    hide: function() {
+    hide: function () {
       this.isActive = false;
-    }
+    },
   },
   watch: {
-    search_term:  _.debounce(function(query) {
+    search_term: _.debounce(function (query) {
       this.searchFor(query);
-    }, 250)
-  }
-}
+    }, 250),
+  },
+};
 </script>
 
 <style scoped>
 .loading_container {
-display: flex;
-justify-content: center;
-height: var(--size6)}
-.active_input {  
+  display: flex;
+  justify-content: center;
+  height: var(--size6);
+}
+.active_input {
   opacity: 1;
   height: calc(var(--size2) * 1.5);
   width: calc(var(--size10) * 2.5);
@@ -97,7 +115,7 @@ height: var(--size6)}
   opacity: 0;
 }
 
-.results_box{
+.results_box {
   position: absolute;
   right: calc(var(--size1) / 2);
   border: none;
@@ -105,7 +123,7 @@ height: var(--size6)}
   padding: 0 1px;
   padding-top: calc(var(--size2) * 1.5);
   right: 0;
-  overflow:hidden;
+  overflow: hidden;
   top: 0;
   outline: none;
   background-color: rgba(255, 255, 255, 0.253);
@@ -152,11 +170,11 @@ height: var(--size6)}
 }
 
 .result {
-  padding: var(--size1)
+  padding: var(--size1);
 }
 
-.result:hover{
+.result:hover {
   cursor: pointer;
-  background-color: var(--wikiblue)
+  background-color: var(--wikiblue);
 }
 </style>
