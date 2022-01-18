@@ -69,6 +69,7 @@ export default {
   },
   methods: {
     getContent(mainSubject) {
+      console.log(window.location.pathname);
       const params = {
         origin: "*",
         action: "query",

@@ -1,4 +1,6 @@
 import Vue from 'vue'
+import routes from './routes'
+// eslint-disable-next-line
 import App from './App.vue'
 import "@/assets/global.css"
 
@@ -20,6 +22,25 @@ Vue.directive('click-outside', {
   },
 });
 
-new Vue({
-  render: h => h(App),
+const app = new Vue({
+  data: {
+    currentRoute: window.location.pathname
+  },
+  computed: {
+    ViewComponent() {
+      const matchingView = routes[this.currentRoute]
+      return matchingView
+        ? require('./pages/' + matchingView + '.vue').default
+        : require('./pages/404.vue').default
+    }
+  },
+  render(h) {
+    // return h(App)
+    return h(this.ViewComponent)
+  },
 }).$mount('#app')
+
+window.addEventListener('popstate', () => {
+  app.currentRoute = window.location.pathname
+})
+
