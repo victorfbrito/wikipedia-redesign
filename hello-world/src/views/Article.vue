@@ -1,7 +1,5 @@
 <template>
   <div id="app">
-    <!-- <wiki-header /> -->
-    <!-- <router-view></router-view> -->
     <article-banner
       v-if="banner_image"
       :alt="banner_image.alt"
@@ -15,6 +13,7 @@
       :views="views"
       :last_updated="last_updated"
     />
+    <button v-on:click="changeLng('pt')">ee</button>
     <div v-html="content" class="main_content" />
     <div class="default_images" v-for="(img, key) in images" :key="key">
       <img-block
@@ -32,11 +31,11 @@
 import axios from "axios";
 import moment from "moment";
 
+import { store } from '../shared/store'
+
 import ImgBlock from "../components/ImgBlock.vue";
 import ArticleBanner from "../components/ArticleBanner.vue";
-
-var lng = "en";
-var url = "https://" + lng + ".wikipedia.org/w/api.php";
+import { search_api } from "../core/api.js"
 
 function PxToRem(px) {
   return px * 0.0625;
@@ -53,6 +52,7 @@ export default {
   },
   data() {
     return {
+      language: store.state.language,
       subject: "Rio_de_Janeiro",
       title: null,
       content: null,
@@ -100,7 +100,7 @@ export default {
         rcprop: "user|timestamp",
       };
 
-      axios.get(url, { params }).then((res) => {
+      axios.get(search_api, { params }).then((res) => {
         const page = res.data.query.pages[Object.keys(res.data.query.pages)[0]];
         this.title = page.title;
         this.content = page.extract;
@@ -123,7 +123,7 @@ export default {
         exintro: "1",
         exsentences: "3",
       };
-      axios.get(url, { params }).then((res) => {
+      axios.get(search_api, { params }).then((res) => {
         this.summary =
           res.data.query.pages[Object.keys(res.data.query.pages)[0]].extract;
       });
@@ -141,7 +141,7 @@ export default {
       };
       let array = [];
       axios
-        .get(url, { params })
+        .get(search_api, { params })
         .then((res) => {
           let data = res.data.query.pages;
           Object.entries(data).map(([k, v]) => ({ [k]: v }));
@@ -181,7 +181,7 @@ export default {
       this.banner_image = img;
     },
   },
-  mounted() {
+  async created() {
     this.getIntro(this.subject);
     this.getContent(this.subject);
     this.getImages(this.subject);

@@ -9,11 +9,12 @@
   },
   "dependencies": {
     "@vue/compiler-sfc": "^3.2.13",
+    "axios": "^0.25.0",
     "core-js": "^3.6.5",
     "fast-average-color": "^7.0.1",
     "moment": "^2.29.1",
-    "vue": "^^3.2.13",
-    "vue-router": "4"
+    "vue": "^3.2.13",
+    "vue-router": "^4.0.12"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

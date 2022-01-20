@@ -105,7 +105,7 @@ export default {
 }
 
 .redirect_button:hover {
-  text-shadow: 0 2px 12px #ffffff;
   cursor: pointer;
+  font-weight: bold;
 }
 </style>
