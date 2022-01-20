@@ -13,7 +13,6 @@
       :views="views"
       :last_updated="last_updated"
     />
-    <button v-on:click="changeLng('pt')">ee</button>
     <div v-html="content" class="main_content" />
     <div class="default_images" v-for="(img, key) in images" :key="key">
       <img-block
