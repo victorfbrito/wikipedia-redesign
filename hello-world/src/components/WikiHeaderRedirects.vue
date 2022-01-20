@@ -5,7 +5,7 @@
       v-for="(option, index) in options"
       :key="index"
     >
-      <div class="submenu_button" v-if="option.subcategories.length > 0">
+      <div class="submenu_button dropdown_menu" v-if="option.subcategories.length > 0">
         {{ option.name }}
       </div>
       <div class="redirect_button" v-else>{{ option.name }}</div>
@@ -77,23 +77,8 @@ export default {
   gap: calc(var(--size1) / 2);
 }
 
-.submenu_button:after {
-  display: block;
-  content: " ";
-  background-repeat: no-repeat;
-  background-image: url("../assets/arrow.svg");
-  background-size: calc(var(--size1) / 2);
-  height: calc(var(--size1) / 2);
-  width: calc(var(--size1) / 2);
-}
-
 .submenu_button:hover {
   cursor: default;
-}
-
-.submenu_button:hover:after {
-  transition: 0.2s;
-  transform: rotateX(180deg) translateY(25%);
 }
 
 .redirect_button {

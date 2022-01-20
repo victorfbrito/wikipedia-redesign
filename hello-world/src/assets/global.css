@@ -148,3 +148,20 @@ h4 {
 .fade-enter {
   opacity: 0;
 }
+
+/* --- Other --- */
+
+.dropdown_menu:after {
+  display: block;
+  content: " ";
+  background-repeat: no-repeat;
+  background-image: url("../assets/arrow.svg");
+  background-size: calc(var(--size1) / 2);
+  height: calc(var(--size1) / 2);
+  width: calc(var(--size1) / 2);
+}
+
+.dropdown_menu:hover:after {
+  transition: 0.2s;
+  transform: rotateX(180deg) translateY(25%);
+}

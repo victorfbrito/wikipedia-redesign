@@ -52,7 +52,7 @@ export default {
   data() {
     return {
       language: store.state.language,
-      subject: "Rio_de_Janeiro",
+      subject: "",
       title: null,
       content: null,
       banner_image: null,
@@ -71,6 +71,7 @@ export default {
       this.getMainImage();
     },
     subject: function () {
+      console.log('subject change: ', this.subject)
       this.getIntro(this.subject);
       this.getContent(this.subject);
       this.getImages(this.subject);
@@ -105,8 +106,8 @@ export default {
         this.content = page.extract;
         this.views = Object.values(page.pageviews).reduce((a, b) => a + b);
         this.last_updated = {
-          user: res.data.query.recentchanges[0].user,
-          date: moment(res.data.query.recentchanges[0].timestamp).format(
+          user: res.data?.query?.recentchanges[0]?.user,
+          date: moment(res.data.query?.recentchanges[0]?.timestamp).format(
             "DD MMM YYYY"
           ),
         };
@@ -179,12 +180,7 @@ export default {
       });
       this.banner_image = img;
     },
-  },
-  async created() {
-    this.getIntro(this.subject);
-    this.getContent(this.subject);
-    this.getImages(this.subject);
-  },
+  }
 };
 </script>
 
