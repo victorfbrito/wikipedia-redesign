@@ -2,7 +2,6 @@
 
 * {
   box-sizing: border-box;
-
   font-family: Roboto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -36,21 +35,28 @@
 
 /* --- Typography --- */
 
-h1 {
+.big_title {
   margin: var(--size1) 0;
   font-size: 6rem;
   font-weight: bold;
+
 }
 
-h2 {
+h1 {
   margin: var(--size1) 0;
   font-size: 2.25rem;
   font-weight: bold;
 }
 
-h3 {
+h2 {
   margin: var(--size1) 0;
   font-size: 1.5rem;
+  font-weight: bold;
+}
+
+h3 {
+  margin: var(--size1) 0;
+  font-size: 1.125rem;
   font-weight: bold;
 }
 

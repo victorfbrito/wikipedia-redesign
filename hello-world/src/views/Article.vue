@@ -13,7 +13,14 @@
       :views="views"
       :last_updated="last_updated"
     />
-    <div v-html="content" class="main_content" />
+    <div class="article_text" v-for="(section, index) in content" :key="index">
+      <article-section
+        :content="section"
+        :index="index + 1"
+        :subject="title"
+        :reading_time="reading_time"
+      />
+    </div>
     <div class="default_images" v-for="(img, key) in images" :key="key">
       <img-block
         :alt="img.alt"
@@ -30,11 +37,12 @@
 import axios from "axios";
 import moment from "moment";
 
-import { store } from '../shared/store'
+import { store } from "../shared/store";
+import { search_api } from "../core/api.js";
 
 import ImgBlock from "../components/ImgBlock.vue";
 import ArticleBanner from "../components/ArticleBanner.vue";
-import { search_api } from "../core/api.js"
+import ArticleSection from "../components/ArticleSection.vue";
 
 function PxToRem(px) {
   return px * 0.0625;
@@ -45,6 +53,7 @@ export default {
   components: {
     ImgBlock,
     ArticleBanner,
+    ArticleSection,
   },
   beforeMount() {
     this.subject = this.$route.params.subject;
@@ -60,6 +69,7 @@ export default {
       summary: null,
       last_updated: null,
       views: 0,
+      reading_time: null,
     };
   },
   watch: {
@@ -71,7 +81,6 @@ export default {
       this.getMainImage();
     },
     subject: function () {
-      console.log('subject change: ', this.subject)
       this.getIntro(this.subject);
       this.getContent(this.subject);
       this.getImages(this.subject);
@@ -82,6 +91,7 @@ export default {
       (this.title = null), (this.content = null);
       this.banner_image = null;
       this.images = [];
+      this.reading_time = null;
       this.summary = null;
       (this.last_updated = null), (this.views = 0);
     },
@@ -103,7 +113,8 @@ export default {
       axios.get(search_api, { params }).then((res) => {
         const page = res.data.query.pages[Object.keys(res.data.query.pages)[0]];
         this.title = page.title;
-        this.content = page.extract;
+        this.reading_time = this.readingTime(page.extract);
+        this.content = this.splitContent(page.extract);
         this.views = Object.values(page.pageviews).reduce((a, b) => a + b);
         this.last_updated = {
           user: res.data?.query?.recentchanges[0]?.user,
@@ -180,7 +191,16 @@ export default {
       });
       this.banner_image = img;
     },
-  }
+    splitContent(extract) {
+      return extract.split(/(?=<h2>)/g);
+    },
+    readingTime(text) {
+      const wpm = 225;
+      const words = text.trim().split(/\s+/).length;
+      const time = Math.ceil(words / wpm);
+      return time;
+    },
+  },
 };
 </script>
 
@@ -203,5 +223,9 @@ export default {
 }
 .default_images img {
   max-width: 100vw;
+}
+
+.article_text {
+  padding: 0 var(--size10);
 }
 </style>

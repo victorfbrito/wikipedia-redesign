@@ -16,7 +16,7 @@
           Last update by <b>{{ last_updated.user }}</b> at
           <b>{{ last_updated.date }}</b>
         </p>
-        <h1 class="title_xxl title">{{ title }}</h1>
+        <h1 class="title_xxl big_title">{{ title }}</h1>
         <p class="text_s views" v-if="views">{{ views }} views last month</p>
         <div class="summary text_m" v-html="summary" />
         <big-button-carroussel />
@@ -57,9 +57,6 @@ export default {
 </script>
 
 <style scoped>
-.title {
-}
-
 .main_container {
   position: relative;
   display: flex;
