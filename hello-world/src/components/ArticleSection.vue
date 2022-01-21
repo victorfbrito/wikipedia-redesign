@@ -38,16 +38,16 @@ export default {
   border-bottom: 1px solid var(--secondary);
 }
 
-.article_section >>> p {
+.article_section:deep(p) {
   color: var(--secondary);
   line-height: var(--size3);
 }
 
-.article_section >>> h2 {
+.article_section:deep(h2) {
   margin-bottom: var(--size4);
 }
 
-.article_section >>> h3 {
+.article_section:deep(h3) {
   margin-bottom: var(--size3);
 }
 </style>

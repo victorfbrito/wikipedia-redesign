@@ -1,26 +1,26 @@
 <template>
-  <div id="main" class="search_bar_container" v-click-outside="hide">
+  <div id="main" class="search_bar_container">
     <input
       class="search_input"
-      :class="isActive ? 'active_input' : 'disabled_input'"
       v-model="search_term"
       placeholder="Search"
-      @focus="isActive = true"
+      @focus="isActive"
     />
-    <div class="results_box" v-if="isActive">
-      <div class="loading_container" v-if="isLoading">
+    <ul class="results_box" v-if="isActive">
+      <li class="loading_container" v-if="isLoading">
         <loading-spinner />
-      </div>
-      <div
+      </li>
+      <li
         v-else
         v-for="(result, index) in results"
+        v-click-outside="hide"
         class="result"
         :key="index"
         v-on:click="redirectTo(result.url)"
       >
         {{ result.name }}
-      </div>
-    </div>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -28,9 +28,7 @@
 import axios from "axios";
 import _ from "lodash";
 import LoadingSpinner from "./LoadingSpinner.vue";
-
-var lng = "en";
-var url = "https://" + lng + ".wikipedia.org/w/api.php";
+import { search_api } from "../core/api.js";
 
 export default {
   components: { LoadingSpinner },
@@ -55,13 +53,9 @@ export default {
             search: query,
             namespace: "0",
           };
-          axios.get(url, { params }).then((res) => {
+          axios.get(search_api, { params }).then((res) => {
             let responses = [];
             for (let i = 0; i < res.data[1].length; i++) {
-              console.log(
-                "split: ",
-                res.data[3][i].split("wikipedia.org/wiki/")
-              );
               responses.push({
                 name: res.data[1][i],
                 url: res.data[3][i].split("wikipedia.org/wiki/").pop(),
@@ -79,14 +73,10 @@ export default {
       this.isLoading = false;
     },
     redirectTo: function (e) {
-      console.log(this.$router);
       this.$router.push({ name: "Article", params: { subject: e } });
     },
-    show: function () {
-      this.isActive = true;
-    },
-    hide: function () {
-      this.isActive = false;
+    clearSearch() {
+      this.results = null;
     },
   },
   watch: {
@@ -103,53 +93,31 @@ export default {
   justify-content: center;
   height: var(--size6);
 }
-.active_input {
-  opacity: 1;
-  height: calc(var(--size2) * 1.5);
-  width: calc(var(--size10) * 2.5);
-}
-
-.disabled_input {
-  height: calc(var(--size2) * 1.5);
-  width: calc(var(--size4));
-  opacity: 0;
-}
 
 .results_box {
   position: absolute;
-  right: calc(var(--size1) / 2);
-  border: none;
-  border-radius: 25px;
-  padding: 0 1px;
-  padding-top: calc(var(--size2) * 1.5);
+  border: 2px solid var(--base);
+  border-radius: 0 0 0.375rem 0.375rem;
+  padding: var(--size2) 1px 0 1px;
   right: 0;
   overflow: hidden;
   top: 0;
   outline: none;
-  background-color: rgba(255, 255, 255, 0.253);
+  color: var(--secondary);
+  background-color: var(--base);
   width: calc(var(--size10) * 2.5);
 }
 
 .search_input {
-  z-index: 5;
-  position: absolute;
-  right: calc(var(--size1) / 2);
-  border: none;
-  border-radius: 25px;
-  padding: 0 var(--size1);
-  right: 0;
-  transition: height 0.1s, width 0.5s, right 0.1s, opacity 0.5s;
-  outline: none;
-}
-
-.search_input:focus-visible {
-  border: 1px solid var(--secondary);
-}
-
-.search_bar_container:hover .search_input {
   height: calc(var(--size2) * 1.5);
   width: calc(var(--size10) * 2.5);
-  opacity: 1;
+  border-radius: 25px;
+  padding: 0 var(--size1);
+  outline: none;
+  border: 1px solid var(--base);
+  z-index: 1;
+  color: var(--secondary);
+  background-color: var(--base);
 }
 
 .search_bar_container {
@@ -159,14 +127,16 @@ export default {
 }
 
 .search_bar_container:after {
+  position: absolute;
+  right: 0;
   display: block;
   content: " ";
-  height: calc(var(--size2) * 1.2);
-  width: calc(var(--size2) * 1.2);
-  margin-right: calc(var(--size1) / 3.2);
-  background-image: url("../assets/circled_search_icon.svg");
-  background-size: calc(var(--size2) * 1.2);
-  z-index: 1;
+  height: var(--size1);
+  width: var(--size1);
+  margin-right: var(--size1);
+  background-image: url("../assets/search_icon.svg");
+  background-size: var(--size1);
+  background-repeat: no-repeat;
 }
 
 .result {
@@ -175,6 +145,7 @@ export default {
 
 .result:hover {
   cursor: pointer;
+  color: var(--base);
   background-color: var(--wikiblue);
 }
 </style>
