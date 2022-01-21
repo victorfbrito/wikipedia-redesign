@@ -63,7 +63,7 @@ export default {
       language: store.state.language,
       subject: "",
       title: null,
-      content: null,
+      content: [],
       banner_image: null,
       images: [],
       summary: null,
@@ -84,7 +84,7 @@ export default {
       this.getIntro(this.subject);
       this.getContent(this.subject);
       this.getImages(this.subject);
-    },
+    }
   },
   methods: {
     resetContent() {

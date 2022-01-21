@@ -1,8 +1,8 @@
 <template>
   <div id="main" class="carroussel">
-    <button v-for="(item, index) in options" :key="index" class="button base">
+    <button v-for="(item, index) in options" :key="index" class="button secondary">
       <img class="icon" :src="item.icon" />
-      <p class="text_s title">{{ item.title }}</p>
+      <!-- <p class="text_s title">{{ item.title }}</p> -->
     </button>
   </div>
 </template>
@@ -11,6 +11,7 @@
 import TranslateIcon from "../assets/translate_icon.svg";
 import AudioIcon from "../assets/audio_icon.svg";
 import ShareIcon from "../assets/share_icon.svg";
+import FontIcon from "../assets/font_icon.svg";
 
 export default {
   name: "BigButtonCarroussel",
@@ -28,6 +29,11 @@ export default {
           icon: AudioIcon,
         },
         {
+          type: "typography",
+          title: "Typography",
+          icon: FontIcon,
+        },
+        {
           type: "share",
           title: "Share",
           icon: ShareIcon,
@@ -41,30 +47,32 @@ export default {
 
 <style scoped>
 .carroussel {
-  display: flex;
-  flex-direction: row;
-  gap: var(--size2);
-  margin-top: var(--size2);
+    position: absolute;
+    left: 0;
+    margin-left: var(--size10);
+    /* right: calc(100% + var(--size3)); */
+    display: flex;
+    flex-direction: column;
+    gap: var(--size1);
 }
 
 .button {
-  /* opacity: 0.6; */
   background-color: transparent;
   border-radius: 50%;
   border: 1px solid;
-  width: var(--size10);
-  height: var(--size10);
+  width: var(--size6);
+  height: var(--size6);
 }
 
 .button:hover {
   opacity: 1;
   cursor: pointer;
-  box-shadow: 0px 0px 4px var(--base);
+  box-shadow: 0px 0px 4px var(--secondary);
 }
 
 .icon {
-  width: var(--size3);
-  height: var(--size3);
+  width: var(--size2);
+  height: var(--size2);
 }
 
 .title {

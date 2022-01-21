@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import BigButtonCarroussel from "./BigButtonCarroussel.vue";
+import BigButtonCarroussel from "./HorizontalButtonCarroussel.vue";
 
 export default {
   components: { BigButtonCarroussel },

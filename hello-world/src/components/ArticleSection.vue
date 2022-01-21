@@ -1,6 +1,7 @@
 <template>
   <div id="main" class="article_section">
     <div v-if="index === 1" class="intro_content">
+      <vertical-button-carroussel/>
       <h1 class="intro_title">{{ title }}</h1>
       <p class="reading_time">{{ this.reading_time }} min read</p>
       <div v-html="text" class="main_content" />
@@ -9,14 +10,15 @@
   </div>
 </template> 
 <script>
+import VerticalButtonCarroussel from './VerticalButtonCarroussel.vue';
 export default {
+  components: { VerticalButtonCarroussel },
   name: "ArticleSection",
   props: ["index", "content", "subject", "reading_time"],
   data: function () {
     return {
       title: this.subject,
       text: this.content.replace("<h2>", "<h2>" + this.index + ".0 "),
-      // min_reading_time: this.reading_time,
     };
   },
 };
@@ -27,9 +29,23 @@ export default {
 }
 
 .reading_time {
-  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--size1);
+  margin: 0 0 var(--size1) 0;
 }
+
+.reading_time:before {
+  display: block;
+  content: " ";
+  height: var(--size1);
+  width: var(--size1);
+  background-image: url("../assets/clock_icon.svg");
+  background-size: var(--size1);
+}
+
 .intro_content {
+  /* position: relative; */
   margin-top: var(--size8);
 }
 
