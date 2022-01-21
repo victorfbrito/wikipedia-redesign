@@ -35,7 +35,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   height: var(--size3);
-  padding: var(--size1) var(--size10);
+  padding: var(--size1) var(--app-margin);
   border-bottom: 1px solid var(--secondary);
 }
 

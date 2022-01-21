@@ -1,7 +1,7 @@
 <template>
   <div id="main" class="article_section">
     <div v-if="index === 1" class="intro_content">
-      <vertical-button-carroussel/>
+      <vertical-button-carroussel class="hidden-if-mobile"/>
       <h1 class="intro_title">{{ title }}</h1>
       <p class="reading_time">{{ this.reading_time }} min read</p>
       <div v-html="text" class="main_content" />
@@ -50,7 +50,7 @@ export default {
 }
 
 .article_section {
-  padding: var(--size1) var(--size10);
+  padding: var(--size1) var(--app-margin);
   border-bottom: 1px solid var(--secondary);
 }
 

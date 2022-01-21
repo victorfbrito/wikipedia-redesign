@@ -83,7 +83,7 @@ export default {
   position: absolute;
   height: 100vh;
   z-index: 1;
-  padding: var(--size10);
+  padding: var(--app-margin);
 }
 
 .info {
@@ -98,6 +98,13 @@ export default {
 .summary {
   margin-top: 0;
   text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.summary {
+  display: -webkit-box;
+  -webkit-line-clamp:8;
+  -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
@@ -141,8 +148,9 @@ export default {
     margin-right: 0%;
   }
 
-  .banner_content {
-    padding: var(--size4);
+  .summary {
+    -webkit-line-clamp: 5;
+    margin-bottom: var(--size10);
   }
 }
 </style>

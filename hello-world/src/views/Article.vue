@@ -226,6 +226,13 @@ export default {
 }
 
 .article_text {
-  padding: 0 var(--size10);
+  padding: 0 var(--app-margin);
 }
+
+@media screen and (max-width: 992px) {
+  .article_text {
+    padding: 0
+  }
+}
+
 </style>

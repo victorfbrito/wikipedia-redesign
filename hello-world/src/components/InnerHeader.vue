@@ -50,7 +50,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   height: var(--size10);
-  padding: 0 var(--size10);
+  padding: 0 var(--app-margin);
   border-bottom: 1px solid var(--secondary);
 }
 

@@ -1,6 +1,6 @@
 <template>
   <div id="main" class="header">
-    <outer-header/>
+    <outer-header class="hidden-if-mobile"/>
     <inner-header/>
   </div>
 </template>
