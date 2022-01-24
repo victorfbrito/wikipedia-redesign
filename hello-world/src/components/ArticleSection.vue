@@ -50,7 +50,8 @@ export default {
 }
 
 .article_section {
-  padding: var(--size1) var(--app-margin);
+  padding: var(--size1)0;
+  margin: var(--size1) var(--app-margin);
   border-bottom: 1px solid var(--secondary);
 }
 
