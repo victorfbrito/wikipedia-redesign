@@ -82,8 +82,9 @@ export default {
   align-items: center;
   position: absolute;
   height: 100vh;
+  width: 100vw;
   z-index: 1;
-  padding: var(--app-margin);
+  padding: calc(var(--app-margin) + var(--size3)) var(--app-margin);
 }
 
 .info {
@@ -92,7 +93,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-right: 50%;
+  padding-right: 50%;
 }
 
 .summary {
@@ -145,7 +146,7 @@ export default {
 
 @media screen and (max-width: 992px) {
   .info {
-    margin-right: 0%;
+    padding-right: 0%;
   }
 
   .summary {

@@ -50,7 +50,7 @@
   margin: var(--size1) 0;
   font-size: 6rem;
   font-weight: bold;
-
+  white-space: nowrap;
 }
 
 
