@@ -1,5 +1,5 @@
 <template>
-  <div id="inner-header" class="inner-header">
+  <div id="inner-header" class="inner_header">
     <img class="icon" src="../assets/wikipedia_logo_1.svg" />
     <wiki-header-redirects v-if="desktop" />
     <search-bar />
@@ -44,7 +44,7 @@ export default {
 </script>
 
 <style scoped>
-.inner-header {
+.inner_header {
   width: 100%;
   display: flex;
   align-items: center;
@@ -60,12 +60,18 @@ export default {
 }
 
 @media screen and (max-width: 992px) {
+
+  .icon {
+    width: var(--size3);
+    height: var(--size3);
+  }
   .info {
     margin-right: 0%;
   }
 
-  .header {
+  .inner_header {
     padding: 0 var(--size4);
+    height: var(--size8);
   }
 }
 </style>

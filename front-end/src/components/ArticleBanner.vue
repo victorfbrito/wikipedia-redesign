@@ -151,7 +151,10 @@ export default {
 
   .summary {
     -webkit-line-clamp: 5;
-    margin-bottom: var(--size10);
+  }
+  .article_arrow {
+    gap: calc(var(--size1) /2);
+    margin: var(--size1);
   }
 }
 </style>

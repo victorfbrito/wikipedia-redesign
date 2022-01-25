@@ -1,42 +1,49 @@
 <template>
-  <div id="main" class="search_bar_container">
-    <input
-      ref="search_input"
-      class="search_input"
-      v-model="search_term"
-      placeholder="Search"
-      @click="showPopup = !showPopup"
-    />
-    <ul class="results_box"
+  <div id="main">
+    <div class="search_bar_container">
+      <input
+        ref="search_input"
+        class="search_input"
+        v-model="search_term"
+        placeholder="Search"
+        @click="showPopup = !showPopup"
+      />
+      <ul class="results_box"
+        v-show="showPopup"
+        v-closable="{
+          handler: 'onClose'
+        }"
+        v-if="results"
+      >
+        <li
+          v-for="(result, index) in results"
+          class="result"
+          :key="index"
+          v-on:click="redirectTo(result.url)"
+        >
+          {{ result.name }}
+        </li>
+      </ul>
+      <!-- <li class="loading_container">
+      </li> -->
+    </div>
+    <span class="outside_container"
       v-show="showPopup"
+      @click="showPopup = false"
       v-closable="{
         handler: 'onClose'
-      }"
-    >
-      <li class="loading_container" v-if="isLoading">
-        <loading-spinner />
-      </li>
-      <li
-        v-else
-        v-for="(result, index) in results"
-        class="result"
-        :key="index"
-        v-on:click="redirectTo(result.url)"
-      >
-        {{ result.name }}
-      </li>
-    </ul>
+    }"/>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import _ from "lodash";
-import LoadingSpinner from "./LoadingSpinner.vue";
+// import LoadingSpinner from "./LoadingSpinner.vue";
 import { search_api } from "../core/api.js";
 
 export default {
-  components: { LoadingSpinner },
+  // components: { LoadingSpinner },
   name: "SearchBar",
   data() {
     return {
@@ -48,10 +55,9 @@ export default {
   },
   methods: {
     onClose() {
-      console.log('close')
       this.showPopup = false
     },
-    searchFor(query) {
+    async searchFor(query) {
       this.isLoading = true;
       if (query.length > 0) {
         try {
@@ -62,7 +68,7 @@ export default {
             search: query,
             namespace: "0",
           };
-          axios.get(search_api, { params }).then((res) => {
+          await axios.get(search_api, { params }).then((res) => {
             let responses = [];
             for (let i = 0; i < res.data[1].length; i++) {
               responses.push({
@@ -70,6 +76,7 @@ export default {
                 url: res.data[3][i].split("wikipedia.org/wiki/").pop(),
               });
             }
+            console.log('new results: '), responses
             this.results = responses;
             this.isActive = true;
           });
@@ -82,6 +89,7 @@ export default {
       this.isLoading = false;
     },
     redirectTo: function (e) {
+      this.showPopup = false;
       this.$router.push({ name: "Article", params: { subject: e } });
     }
   },
@@ -94,6 +102,16 @@ export default {
 </script>
 
 <style scoped>
+
+.outside_container {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  left:0;
+  top:0;
+  z-index: 5;
+}
+
 .loading_container {
   display: flex;
   justify-content: center;
@@ -112,6 +130,7 @@ export default {
   color: var(--secondary);
   background-color: var(--base);
   width: calc(var(--size10) * 2.5);
+  z-index: 6;
 }
 
 .search_input {
@@ -121,7 +140,7 @@ export default {
   padding: 0 var(--size1);
   outline: none;
   border: 1px solid var(--base);
-  z-index: 1;
+  z-index: 7;
   color: var(--secondary);
   background-color: var(--base);
 }
@@ -130,19 +149,6 @@ export default {
   position: relative;
   display: flex;
   align-items: center;
-}
-
-.search_bar_container:after {
-  position: absolute;
-  right: 0;
-  display: block;
-  content: " ";
-  height: var(--size1);
-  width: var(--size1);
-  margin-right: var(--size1);
-  background-image: url("../assets/search_icon.svg");
-  background-size: var(--size1);
-  background-repeat: no-repeat;
 }
 
 .result {
