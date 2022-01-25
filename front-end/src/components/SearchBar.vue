@@ -1,19 +1,24 @@
 <template>
   <div id="main" class="search_bar_container">
     <input
+      ref="search_input"
       class="search_input"
       v-model="search_term"
       placeholder="Search"
-      @focus="isActive"
+      @click="showPopup = !showPopup"
     />
-    <ul class="results_box" v-if="isActive">
+    <ul class="results_box"
+      v-show="showPopup"
+      v-closable="{
+        handler: 'onClose'
+      }"
+    >
       <li class="loading_container" v-if="isLoading">
         <loading-spinner />
       </li>
       <li
         v-else
         v-for="(result, index) in results"
-        v-click-outside="hide"
         class="result"
         :key="index"
         v-on:click="redirectTo(result.url)"
@@ -38,10 +43,14 @@ export default {
       search_term: null,
       isLoading: false,
       results: null,
-      isActive: false,
+      showPopup: false
     };
   },
   methods: {
+    onClose() {
+      console.log('close')
+      this.showPopup = false
+    },
     searchFor(query) {
       this.isLoading = true;
       if (query.length > 0) {
@@ -74,10 +83,7 @@ export default {
     },
     redirectTo: function (e) {
       this.$router.push({ name: "Article", params: { subject: e } });
-    },
-    clearSearch() {
-      this.results = null;
-    },
+    }
   },
   watch: {
     search_term: _.debounce(function (query) {
