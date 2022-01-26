@@ -2,13 +2,9 @@
   <div id="app">
     <article-banner
       v-if="banner_image"
-      :alt="banner_image.alt"
+      :info="banner_image"
       :images="images"
-      :description="banner_image.description"
       :title="title"
-      :url_src="banner_image.src"
-      :width="banner_image.width"
-      :height="banner_image.height"
       :summary="summary"
       :views="views"
       :last_updated="last_updated"
@@ -84,7 +80,7 @@ export default {
       this.getIntro(this.subject);
       this.getContent(this.subject);
       this.getImages(this.subject);
-    }
+    },
   },
   methods: {
     resetContent() {
@@ -231,8 +227,7 @@ export default {
 
 @media screen and (max-width: 992px) {
   .article_text {
-    padding: 0
+    padding: 0;
   }
 }
-
 </style>

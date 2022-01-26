@@ -1,7 +1,7 @@
 <template>
   <div id="main" class="article_section">
     <div v-if="index === 1" class="intro_content">
-      <vertical-button-carroussel class="hidden-if-mobile"/>
+      <vertical-button-carroussel class="hidden-if-mobile" />
       <h1 class="intro_title">{{ title }}</h1>
       <p class="reading_time">{{ this.reading_time }} min read</p>
       <div v-html="text" class="main_content" />
@@ -10,7 +10,7 @@
   </div>
 </template> 
 <script>
-import VerticalButtonCarroussel from './VerticalButtonCarroussel.vue';
+import VerticalButtonCarroussel from "./VerticalButtonCarroussel.vue";
 export default {
   components: { VerticalButtonCarroussel },
   name: "ArticleSection",
@@ -50,7 +50,7 @@ export default {
 }
 
 .article_section {
-  padding: var(--size1)0;
+  padding: var(--size1) 0;
   margin: var(--size1) var(--app-margin);
   border-bottom: 1px solid var(--secondary);
 }

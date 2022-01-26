@@ -161,15 +161,16 @@ h4 {
 
 /* --- Animations --- */
 
-.fade-enter-active {
-  transition: opacity 1s ease-in-out;
+.slide-fade-enter-active {
+  transition: all 1s ease;
 }
 
-.fade-enter-to {
-  opacity: 1;
+.slide-fade-leave-active {
+  transition: all .5s ease;
 }
 
-.fade-enter {
+.slide-fade-enter-from, .slide-fade-leave-to {
+  transform: translateX(10px);
   opacity: 0;
 }
 

@@ -1,24 +1,40 @@
 <template>
   <div id="main_container" class="main_container base">
-    <transition name="fade">
+    <transition name="slide-fade" mode="out-in">
       <img
         v-on:load="onLoaded"
+        v-if="showContent"
         v-show="loaded"
-        id="background_image"
-        :src="url_src"
-        :alt="alt"
+        :src="this.src"
+        :alt="this.alt"
         class="background_image"
       />
     </transition>
     <div class="banner_content">
       <div class="info">
-        <p class="text_m" v-if="last_updated">
-          Last update by <b>{{ last_updated.user }}</b> at
-          <b>{{ last_updated.date }}</b>
-        </p>
-        <h1 class="title_xxl big_title">{{ title }}</h1>
-        <p class="text_s views" v-if="views">{{ views }} views last month</p>
-        <div class="summary text_m" v-html="summary" />
+        <transition name="slide-fade" mode="out-in">
+          <p class="text_m" v-if="showContent && last_updated">
+            Last update by <b>{{ last_updated.user }}</b> at
+            <b>{{ last_updated.date }}</b>
+          </p>
+        </transition>
+        <transition name="slide-fade" mode="out-in">
+          <h1 class="title_xxl big_title" v-if="showContent && title">
+            {{ title }}
+          </h1>
+        </transition>
+        <transition name="slide-fade" mode="out-in">
+          <p class="text_s views" v-if="showContent && views">
+            {{ views }} views last month
+          </p>
+        </transition>
+        <transition name="slide-fade" mode="out-in">
+          <div
+            class="summary text_m"
+            v-html="summary"
+            v-if="showContent && summary"
+          />
+        </transition>
         <big-button-carroussel />
       </div>
       <div class="article_arrow button_m_bold">Read article</div>
@@ -32,24 +48,24 @@ import BigButtonCarroussel from "./HorizontalButtonCarroussel.vue";
 export default {
   components: { BigButtonCarroussel },
   name: "MainImage",
-  props: [
-    "alt",
-    "title",
-    "description",
-    "width",
-    "height",
-    "url_src",
-    "summary",
-    "views",
-    "last_updated",
-  ],
+  props: ["info", "title", "summary", "views", "last_updated"],
   data: function () {
     return {
       loaded: false,
+      showContent: false,
+      alt: this.info.alt || " ",
+      description: this.info.description || " ",
+      width: this.info.width || " ",
+      height: this.info.height || " ",
+      src: this.info.src || " ",
     };
+  },
+  mounted() {
+    this.showContent = true;
   },
   methods: {
     onLoaded() {
+      console.log("load img");
       this.loaded = true;
     },
   },
@@ -104,7 +120,7 @@ export default {
 
 .summary {
   display: -webkit-box;
-  -webkit-line-clamp:8;
+  -webkit-line-clamp: 8;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -153,7 +169,7 @@ export default {
     -webkit-line-clamp: 5;
   }
   .article_arrow {
-    gap: calc(var(--size1) /2);
+    gap: calc(var(--size1) / 2);
     margin: var(--size1);
   }
 }
