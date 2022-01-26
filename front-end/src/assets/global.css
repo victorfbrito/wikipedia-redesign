@@ -166,12 +166,37 @@ h4 {
 }
 
 .slide-fade-leave-active {
-  transition: all .5s ease;
+  transition: transform 1.5s ease-in-out, opacity .5s ease-in;
 }
 
 .slide-fade-enter-from, .slide-fade-leave-to {
-  transform: translateX(10px);
+  transform: translateX(100px);
   opacity: 0;
+}
+
+.fade-enter-active {
+  transition: transform 30s ease, opacity 1s ease-in;
+}
+
+.fade-leave-active {
+  transition: transform 3s ease-in-out, opacity .2s ease-in-out;
+}
+
+.fade-enter-from, .fade-leave-to {
+  /* transform: translateX(100px); */
+  opacity: 0;
+}
+
+.delay_1 {
+  transition-delay: 0.5s;
+}
+
+.delay_2 {
+  transition-delay: 2s;
+}
+
+.delay_3 {
+  transition-delay: 4s;
 }
 
 /* --- Other --- */

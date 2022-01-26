@@ -1,17 +1,17 @@
 <template>
   <div id="main_container" class="main_container base">
-    <transition name="slide-fade" mode="out-in">
+    <transition name="fade" mode="out-in">
       <img
-        v-on:load="onLoaded"
-        v-if="showContent"
-        v-show="loaded"
-        :src="this.src"
-        :alt="this.alt"
+        @load="onLoaded"
+        :src="this.info.src"
+        :alt="alt"
+        :key="src"
         class="background_image"
+        :class="loaded && 'loaded'"
       />
     </transition>
     <div class="banner_content">
-      <div class="info">
+      <div class="info"> 
         <transition name="slide-fade" mode="out-in">
           <p class="text_m" v-if="showContent && last_updated">
             Last update by <b>{{ last_updated.user }}</b> at
@@ -30,7 +30,7 @@
         </transition>
         <transition name="slide-fade" mode="out-in">
           <div
-            class="summary text_m"
+            class="summary text_m "
             v-html="summary"
             v-if="showContent && summary"
           />
@@ -53,19 +53,26 @@ export default {
     return {
       loaded: false,
       showContent: false,
-      alt: this.info.alt || " ",
-      description: this.info.description || " ",
-      width: this.info.width || " ",
-      height: this.info.height || " ",
-      src: this.info.src || " ",
+      alt: this.info?.alt || " ",
+      src: this.info?.src || null,
     };
   },
+  watch: {
+    info: function() {
+      this.src = this.info.src
+    }
+  },
+  beforeUnmount() {
+    console.log('unmount')
+    this.showContent = false;
+  },
   mounted() {
+    console.log('mount')
     this.showContent = true;
   },
   methods: {
     onLoaded() {
-      console.log("load img");
+      console.log("load img: ", this.info?.src);
       this.loaded = true;
     },
   },
@@ -83,11 +90,12 @@ export default {
 }
 
 .background_image {
-  position: absolute;
+  position: absolute; 
   width: 100%;
   min-width: 100vw;
   min-height: 100vh;
   object-fit: cover;
+  /* opacity: 0; */
 }
 
 .banner_content {

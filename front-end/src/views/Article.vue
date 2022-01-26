@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <article-banner
-      v-if="banner_image"
       :info="banner_image"
       :images="images"
       :title="title"
