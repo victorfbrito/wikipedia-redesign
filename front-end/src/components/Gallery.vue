@@ -5,9 +5,6 @@
       <carousel v-if="images.length > 0" class="story-carousel story-carousel--multiple story-carousel--images"
         :hideArrows="false"
         :hideArrowsOnBound="true"
-        @page="pageClick"
-        @bound-left="boundLeftClick"
-        @bound-right="boundRightClick"
       >
         <slide class="story-carousel__slide" v-for="(item, index) in images" :key="index">
           <gallery-image
@@ -17,23 +14,6 @@
             :width="'200px'"
         />
         </slide>
-        <!-- <template #arrows="propss">
-          <button v-on:click="consoleLog(propss)">
-            left
-          </button>
-
-          <button v-on:click="changeSlide(1)">
-            right
-          </button>
-
-          <p v-if="boundLeft">
-            boundLeft!
-          </p>
-
-          <p v-else-if="boundRight">
-            boundRight!
-          </p>
-        </template> -->
       </carousel>
     </div>
   </div>

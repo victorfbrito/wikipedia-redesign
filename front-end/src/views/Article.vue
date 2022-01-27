@@ -156,6 +156,7 @@ export default {
         generator: "images",
         iiprop: "url|extmetadata|dimensions",
         gimdir: "ascending",
+        gimlimit: '15'
       };
       let array = [];
       axios
@@ -164,7 +165,7 @@ export default {
           let data = res.data.query.pages;
           Object.entries(data).map(([k, v]) => ({ [k]: v }));
           for (let image in data) {
-            if (!exceptions.includes(data[image].title)) {
+            if (!exceptions.includes(data[image].title) && data[image].title.substring(data[image].title.length - 4) !== '.svg') {
               array.push({
                 alt: data[image].title,
                 src: data[image].imageinfo[0].url,

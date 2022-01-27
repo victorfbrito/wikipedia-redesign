@@ -4,5 +4,6 @@ export default [
     "File:OOjs UI icon edit-ltr-progressive.svg",
     "File:Symbol category class.svg",
     "File:Ambox important.svg",
-    "File:Wikiquote-logo.svg"
+    "File:Wikiquote-logo.svg",
+    "File:Crab Nebula.jpg"
 ]
