@@ -72,7 +72,6 @@ export default {
   },
   methods: {
     onLoaded() {
-      console.log("load img: ", this.info?.src);
       this.loaded = true;
     },
   },
