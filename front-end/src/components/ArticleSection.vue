@@ -24,6 +24,7 @@ export default {
 };
 </script>
 <style scoped>
+
 .intro_title {
   margin: 0;
 }
@@ -51,7 +52,7 @@ export default {
 
 .article_section {
   padding: var(--size1) 0;
-  margin: var(--size1) var(--app-margin);
+  margin: 0 var(--app-margin);
   border-bottom: 1px solid var(--secondary);
 }
 

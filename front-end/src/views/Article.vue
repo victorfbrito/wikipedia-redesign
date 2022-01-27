@@ -8,13 +8,18 @@
       :views="views"
       :last_updated="last_updated"
     />
-    <div class="article_text" v-for="(section, index) in content" :key="index">
-      <article-section
-        :content="section"
-        :index="index + 1"
-        :subject="title"
-        :reading_time="reading_time"
-      />
+    <div class="article_text" v-if="content">
+      <div v-for="(section, index) in content" :key="index">
+        <article-section
+          :content="section"
+          :index="index + 1"
+          :subject="title"
+          :reading_time="reading_time"
+        />
+      </div>
+    </div>
+    <div v-else class="spinner_container">
+      <loading-spinner/>
     </div>
     <div class="default_images" v-for="(img, key) in images" :key="key">
       <img-block
@@ -38,6 +43,7 @@ import { search_api } from "../core/api.js";
 import ImgBlock from "../components/ImgBlock.vue";
 import ArticleBanner from "../components/ArticleBanner.vue";
 import ArticleSection from "../components/ArticleSection.vue";
+import LoadingSpinner from '../components/LoadingSpinner.vue';
 
 function PxToRem(px) {
   return px * 0.0625;
@@ -49,6 +55,7 @@ export default {
     ImgBlock,
     ArticleBanner,
     ArticleSection,
+    LoadingSpinner
   },
   beforeMount() {
     this.subject = this.$route.params.subject;
@@ -200,13 +207,21 @@ export default {
 </script>
 
 <style>
+.spinner_container {
+  display: flex;
+  justify-content: center;
+  padding: var(--size10)
+}
+
 .v-lazy-image {
   opacity: 0;
   transition: opacity 2s;
 }
+
 .v-lazy-image-loaded {
   opacity: 1;
 }
+
 #app {
   overflow: hidden;
 }
