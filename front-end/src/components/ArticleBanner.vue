@@ -3,7 +3,7 @@
     <transition name="fade" mode="out-in">
       <img
         @load="onLoaded"
-        :src="this.info.src"
+        :src="src"
         :alt="alt"
         :key="src"
         class="background_image"
@@ -11,7 +11,7 @@
       />
     </transition>
     <div class="banner_content">
-      <div class="info"> 
+      <div class="info">
         <transition name="slide-fade" mode="out-in">
           <p class="text_m" v-if="showContent && last_updated">
             Last update by <b>{{ last_updated.user }}</b> at
@@ -30,7 +30,7 @@
         </transition>
         <transition name="slide-fade" mode="out-in">
           <div
-            class="summary text_m "
+            class="summary text_m"
             v-html="summary"
             v-if="showContent && summary"
           />
@@ -58,16 +58,16 @@ export default {
     };
   },
   watch: {
-    info: function() {
-      this.src = this.info.src
-    }
+    info: function () {
+      this.src = this.info.src;
+    },
   },
   beforeUnmount() {
-    console.log('unmount')
+    console.log("unmount");
     this.showContent = false;
   },
   mounted() {
-    console.log('mount')
+    console.log("mount");
     this.showContent = true;
   },
   methods: {
@@ -90,7 +90,7 @@ export default {
 }
 
 .background_image {
-  position: absolute; 
+  position: absolute;
   width: 100%;
   min-width: 100vw;
   min-height: 100vh;
