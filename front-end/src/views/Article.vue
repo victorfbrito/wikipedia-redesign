@@ -16,6 +16,7 @@
           :subject="title"
           :reading_time="reading_time"
         />
+      <div v-if="index == 0"><gallery :images="images"/></div>
       </div>
     </div>
     <div v-else class="spinner_container">
@@ -44,6 +45,9 @@ import ImgBlock from "../components/ImgBlock.vue";
 import ArticleBanner from "../components/ArticleBanner.vue";
 import ArticleSection from "../components/ArticleSection.vue";
 import LoadingSpinner from '../components/LoadingSpinner.vue';
+import Gallery from '../components/Gallery.vue';
+
+import exceptions from '../config/image_exceptions'
 
 function PxToRem(px) {
   return px * 0.0625;
@@ -55,7 +59,8 @@ export default {
     ImgBlock,
     ArticleBanner,
     ArticleSection,
-    LoadingSpinner
+    LoadingSpinner,
+    Gallery
   },
   beforeMount() {
     this.subject = this.$route.params.subject;
@@ -159,16 +164,19 @@ export default {
           let data = res.data.query.pages;
           Object.entries(data).map(([k, v]) => ({ [k]: v }));
           for (let image in data) {
-            array.push({
-              alt: data[image].title,
-              src: data[image].imageinfo[0].url,
-              description:
-                data[image].imageinfo[0].extmetadata?.ImageDescription?.value ||
-                "no description available",
-              height: PxToRem(data[image].imageinfo[0].height),
-              width: PxToRem(data[image].imageinfo[0].width),
-            });
+            if (!exceptions.includes(data[image].title)) {
+              array.push({
+                alt: data[image].title,
+                src: data[image].imageinfo[0].url,
+                description:
+                  data[image].imageinfo[0].extmetadata?.ImageDescription?.value ||
+                  "no description available",
+                height: PxToRem(data[image].imageinfo[0].height),
+                width: PxToRem(data[image].imageinfo[0].width),
+              });
+            }
           }
+          console.log('images: ',array)
           this.images = array;
         })
         .catch(function (error) {
