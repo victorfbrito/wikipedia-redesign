@@ -22,15 +22,6 @@
     <div v-else class="spinner_container">
       <loading-spinner/>
     </div>
-    <div class="default_images" v-for="(img, key) in images" :key="key">
-      <img-block
-        :alt="img.alt"
-        :url_src="img.src"
-        :description="img.description"
-        :width="img.width"
-        :height="img.height"
-      />
-    </div>
   </div>
 </template>
 
