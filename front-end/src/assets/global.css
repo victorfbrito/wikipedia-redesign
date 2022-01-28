@@ -182,7 +182,17 @@ h4 {
   transition: transform 3s ease-in-out, opacity .2s ease-in-out;
 }
 
-.fade-enter-from, .fade-leave-to {
+.fade-delay-enter-active {
+  transition: opacity .2s ease;
+  transition-delay: 3s;
+}
+
+.fade-delay-leave-active {
+  transition: opacity 0.8s ease-in-out;
+  /* transition-delay: 2s; */
+}
+
+.fade-enter-from, .fade-leave-to, .fade-delay-enter-from, .fade-delay-leave-to {
   /* transform: translateX(100px); */
   opacity: 0;
 }

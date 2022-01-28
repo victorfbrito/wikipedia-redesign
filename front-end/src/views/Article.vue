@@ -16,7 +16,7 @@
           :subject="title"
           :reading_time="reading_time"
         />
-      <div v-if="index == 0"><gallery :images="images"/></div>
+      <div v-if="index == 0"><gallery :images="images"  v-if="images.length > 0"/></div>
       </div>
     </div>
     <div v-else class="spinner_container">
@@ -103,7 +103,6 @@ export default {
       (this.last_updated = null), (this.views = 0);
     },
     getContent(mainSubject) {
-      console.log(window.location.pathname);
       const params = {
         origin: "*",
         action: "query",
@@ -165,7 +164,8 @@ export default {
           let data = res.data.query.pages;
           Object.entries(data).map(([k, v]) => ({ [k]: v }));
           for (let image in data) {
-            if (!exceptions.includes(data[image].title) && data[image].title.substring(data[image].title.length - 4) !== '.svg') {
+            if (!exceptions.includes(data[image].title)
+            && data[image].title.substring(data[image].title.length - 4) !== '.svg') {
               array.push({
                 alt: data[image].title,
                 src: data[image].imageinfo[0].url,

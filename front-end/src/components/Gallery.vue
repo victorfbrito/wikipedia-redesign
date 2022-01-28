@@ -2,7 +2,7 @@
   <div id="main" class="article_section">
     <div class="main_content">
       <h2 class="intro_title">Galeria</h2>
-      <carousel v-if="images.length > 0" class="story-carousel story-carousel--multiple story-carousel--images"
+      <carousel class="story-carousel story-carousel--multiple story-carousel--images"
         :hideArrows="false"
         :hideArrowsOnBound="true"
       >

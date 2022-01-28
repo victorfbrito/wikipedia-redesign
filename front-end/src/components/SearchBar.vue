@@ -17,6 +17,7 @@
       >
         <li
           v-for="(result, index) in results"
+          :tabindex="index"
           class="result"
           :key="index"
           v-on:click="redirectTo(result.url)"
@@ -24,8 +25,6 @@
           {{ result.name }}
         </li>
       </ul>
-      <!-- <li class="loading_container">
-      </li> -->
     </div>
     <span class="outside_container"
       v-show="showPopup"

@@ -5,5 +5,6 @@ export default [
     "File:Symbol category class.svg",
     "File:Ambox important.svg",
     "File:Wikiquote-logo.svg",
-    "File:Crab Nebula.jpg"
+    "File:Crab Nebula.jpg",
+    "File:Disambig gray.svg"
 ]
