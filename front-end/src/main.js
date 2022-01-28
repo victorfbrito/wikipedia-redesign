@@ -7,6 +7,7 @@ import routes from './routes'
 import VueClosable from 'vue-closable'
 import VueSnap from 'vue-snap'
 import 'vue-snap/dist/vue-snap.css'
+import 'vue-inner-image-zoom/lib/vue-inner-image-zoom.css'
 
 const app = createApp({})
 

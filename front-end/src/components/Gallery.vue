@@ -12,7 +12,7 @@
             :alt="item.alt" 
             :height="'200px'" 
             :width="'200px'"
-        />
+          />
         </slide>
       </carousel>
     </div>
@@ -31,6 +31,11 @@ export default {
   },
   name: "Gallery",
   props: ["images"],
+  data() {
+    return {
+      openImage: null
+    }
+  },
   methods: {
     consoleLog(par) {
       console.log('par: ',par)
