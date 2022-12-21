@@ -1,6 +1,6 @@
 # Technical Documentation
 
-Wikipedia is an online encyclopedia maintained by a model of open collaboration. They provide free access to their data through the MediaWiki API. I used this project to communicate with and exhibit data from this API. I'm not this designs original creator, just used it as a model for this experience.
+Wikipedia is an online encyclopedia maintained by a model of open collaboration, and they provide free access to their data through the MediaWiki API. This project is an experience where I used Vue and the MediaWiki API to build this recreation of the famous Wikipedia. I'm not this designs original creator, but it's so amazing that I decided to use it as a model for this. You can find the url for the original design in the reference section of this page. It's important to mention that it's just a study and not a finished project, so many features are not done yet. Bugs are expected.
 
 ## Table of contents
 
