@@ -41,7 +41,7 @@ Wikipedia is an online encyclopedia maintained by a model of open collaboration,
 
 - LinkedIn - [Victor Brito](https://www.linkedin.com/in/vbrito-dev/)
 - GitHub - [Victor Brito](https://github.com/victorfbrito/)
-- 
+
 ## Reference
 
 - Redesign Wikipedia - [https://fine-baker-057.notion.site/English-Redesign-Wikipedia-918709ddcc444c19854bd807b5dac794](https://fine-baker-057.notion.site/English-Redesign-Wikipedia-918709ddcc444c19854bd807b5dac794)
