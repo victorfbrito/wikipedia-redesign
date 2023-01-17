@@ -15,6 +15,7 @@
         :subject="title"
         :reading_time="reading_time"
       />
+      <div v-if="index == 0">image gallery</div>
     </div>
     <div class="default_images" v-for="(img, key) in images" :key="key">
       <img-block
@@ -151,16 +152,19 @@ export default {
         .then((res) => {
           let data = res.data.query.pages;
           Object.entries(data).map(([k, v]) => ({ [k]: v }));
+          console.log("images: ", data);
           for (let image in data) {
-            array.push({
-              alt: data[image].title,
-              src: data[image].imageinfo[0].url,
-              description:
-                data[image].imageinfo[0].extmetadata?.ImageDescription?.value ||
-                "no description available",
-              height: PxToRem(data[image].imageinfo[0].height),
-              width: PxToRem(data[image].imageinfo[0].width),
-            });
+            if (!data[image].pageid) {
+              array.push({
+                alt: data[image].title,
+                src: data[image].imageinfo[0].url,
+                description:
+                  data[image].imageinfo[0].extmetadata?.ImageDescription
+                    ?.value || "no description available",
+                height: PxToRem(data[image].imageinfo[0].height),
+                width: PxToRem(data[image].imageinfo[0].width),
+              });
+            }
           }
           this.images = array;
         })
