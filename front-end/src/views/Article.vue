@@ -16,15 +16,9 @@
         :reading_time="reading_time"
       />
       <div v-if="index == 0">image gallery</div>
+    <div v-else class="spinner_container">
+      <loading-spinner/>
     </div>
-    <div class="default_images" v-for="(img, key) in images" :key="key">
-      <img-block
-        :alt="img.alt"
-        :url_src="img.src"
-        :description="img.description"
-        :width="img.width"
-        :height="img.height"
-      />
     </div>
   </div>
 </template>
@@ -39,6 +33,10 @@ import { search_api } from "../core/api.js";
 import ImgBlock from "../components/ImgBlock.vue";
 import ArticleBanner from "../components/ArticleBanner.vue";
 import ArticleSection from "../components/ArticleSection.vue";
+import LoadingSpinner from '../components/LoadingSpinner.vue';
+import Gallery from '../components/Gallery.vue';
+
+import exceptions from '../config/image_exceptions'
 
 function PxToRem(px) {
   return px * 0.0625;
@@ -50,6 +48,8 @@ export default {
     ImgBlock,
     ArticleBanner,
     ArticleSection,
+    LoadingSpinner,
+    Gallery
   },
   beforeMount() {
     this.subject = this.$route.params.subject;
@@ -92,7 +92,6 @@ export default {
       (this.last_updated = null), (this.views = 0);
     },
     getContent(mainSubject) {
-      console.log(window.location.pathname);
       const params = {
         origin: "*",
         action: "query",
@@ -145,6 +144,7 @@ export default {
         generator: "images",
         iiprop: "url|extmetadata|dimensions",
         gimdir: "ascending",
+        gimlimit: '15'
       };
       let array = [];
       axios
@@ -166,6 +166,7 @@ export default {
               });
             }
           }
+          console.log('images: ',array)
           this.images = array;
         })
         .catch(function (error) {
@@ -204,13 +205,21 @@ export default {
 </script>
 
 <style>
+.spinner_container {
+  display: flex;
+  justify-content: center;
+  padding: var(--size10)
+}
+
 .v-lazy-image {
   opacity: 0;
   transition: opacity 2s;
 }
+
 .v-lazy-image-loaded {
   opacity: 1;
 }
+
 #app {
   overflow: hidden;
 }

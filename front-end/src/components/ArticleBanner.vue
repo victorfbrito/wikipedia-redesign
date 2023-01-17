@@ -25,7 +25,7 @@
         </transition>
         <transition name="slide-fade" mode="out-in">
           <p class="text_s views" v-if="showContent && views">
-            {{ views }} views last month
+            views last month
           </p>
         </transition>
         <transition name="slide-fade" mode="out-in">
@@ -35,9 +35,15 @@
             v-if="showContent && summary"
           />
         </transition>
-        <big-button-carroussel />
+        <transition name="slide-fade" mode="out-in">
+          <div v-if="showContent && title" >
+            <big-button-carroussel/>
+          </div>
+        </transition>
       </div>
-      <div class="article_arrow button_m_bold">Read article</div>
+        <transition name="fade-delay">
+          <div v-if="showContent && title" class="article_arrow button_m_bold" >Read article</div>
+        </transition>
     </div>
   </div>
 </template>
@@ -58,13 +64,19 @@ export default {
     };
   },
   watch: {
+    $route: function(prev, next) {
+      // if (prev.params.subject !== next.params.subject) {
+      //   this.showContent = false
+      // }
+      if (!this.src.length > 0) {
+        this.showContent = false
+      }
+      console.log(prev.params.subject)
+      console.log(next.params.subject)
+    },
     info: function () {
       this.src = this.info.src;
     },
-  },
-  beforeUnmount() {
-    console.log("unmount");
-    this.showContent = false;
   },
   mounted() {
     console.log("mount");
@@ -72,7 +84,6 @@ export default {
   },
   methods: {
     onLoaded() {
-      console.log("load img: ", this.info?.src);
       this.loaded = true;
     },
   },
